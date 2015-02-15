@@ -1,9 +1,9 @@
-minitwit-mongodb
+flask-minitwit-mongodb
 ====
 
-What is minitwit-mongodb?
+What is flask-minitwit-mongodb?
 
-A MongoDB powered fork of Minitwit. (https://github.com/mitsuhiko/flask/tree/master/examples/minitwit)
+A MongoDB powered fork of Flask's Minitwit. (https://github.com/mitsuhiko/flask/tree/master/examples/minitwit)
 
 Prerequisites
 ====
@@ -13,9 +13,9 @@ MongoDB installed on your machine, running and listening on port 27017.
 Installation
 ====
 
-1. Download minitwitr-mongodb, then:
+1. Download flask-minitwit-mongodb, then:
 
-        cd minitwit-mongodb/
+        cd flask-minitwit-mongodb/
 
 2. Create a virtualenv and activate it:
 
