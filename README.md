@@ -31,3 +31,8 @@ Installation
         python minitwit.py
 
 5. Open your favorite browser and go to http://127.0.0.1:5000/
+
+
+
+
+pip install Flask-PyMongo

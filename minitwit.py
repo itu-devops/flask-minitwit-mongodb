@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
-import datetime
-from hashlib import md5
-
+import os
 import pytz
+import datetime
+
+from hashlib import md5
 from flask import Flask, request, session, url_for, redirect, \
     render_template, abort, g, flash
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask.ext.pymongo import PyMongo
+from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
 # create our little application :)
 app = Flask(__name__)
-
+db_ip = os.getenv('DB_IP')
+app.config["MONGO_URI"] = f"mongodb://{db_ip}:27017/test"
 # setup mongodb
 mongo = PyMongo(app)
 
@@ -43,6 +45,7 @@ def gravatar_url(email, size=80):
 def before_request():
     g.user = None
     if 'user_id' in session:
+        print(session['user_id'])
         g.user = mongo.db.user.find_one({'_id': ObjectId(session['user_id'])})
 
 
@@ -113,7 +116,7 @@ def unfollow_user(username):
     whom_id = get_user_id(username)
     if whom_id is None:
         abort(404)
-    mongo.db.follower.update(
+    mongo.db.follower.update_one(
         {'who_id': ObjectId(session['user_id'])},
         {'$pull': {'whom_id': whom_id}})
     flash('You are no longer following "%s"' % username)
@@ -128,7 +131,7 @@ def add_message():
     if request.form['text']:
         user = mongo.db.user.find_one(
             {'_id': ObjectId(session['user_id'])}, {'email': 1, 'username': 1})
-        mongo.db.message.insert(
+        mongo.db.message.insert_one(
             {'author_id': ObjectId(session['user_id']),
              'email': user['email'],
              'username': user['username'],
@@ -175,7 +178,7 @@ def register():
         elif get_user_id(request.form['username']) is not None:
             error = 'The username is already taken'
         else:
-            mongo.db.user.insert(
+            mongo.db.user.insert_one(
                 {'username': request.form['username'],
                  'email': request.form['email'],
                  'pw_hash': generate_password_hash(request.form['password'])})
@@ -197,4 +200,4 @@ app.jinja_env.filters['datetimeformat'] = format_datetime
 app.jinja_env.filters['gravatar'] = gravatar_url
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")
