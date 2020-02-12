@@ -1,0 +1,2426 @@
+--- &57 !ruby/object:Vagrant::Machine
+logger: !ruby/object:Log4r::Logger
+  fullname: vagrant::machine
+  outputters: []
+  additive: true
+  name: machine
+  path: vagrant
+  parent: &1 !ruby/object:Log4r::RootLogger
+    level: 0
+    outputters: []
+  level: 0
+  trace: false
+box: 
+config: !ruby/object:Vagrant::Config::V2::Root
+  keys:
+    :nfs: !ruby/object:VagrantPlugins::SyncedFolderNFS::Config
+      functional: true
+      map_uid: :auto
+      map_gid: :auto
+      verify_installed: true
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :smb: !ruby/object:VagrantPlugins::SyncedFolderSMB::Config
+      functional: true
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :ssh: !ruby/object:VagrantPlugins::Kernel_V2::SSHConfig
+      host: 
+      port: 
+      config: 
+      private_key_path: &70
+      - "/Users/ropf/.ssh/id_rsa"
+      username: 
+      password: 
+      insert_key: true
+      keys_only: true
+      paranoid: false
+      verify_host_key: :never
+      compression: true
+      dsa_authentication: true
+      extra_args: 
+      remote_user: 
+      forward_agent: false
+      forward_x11: false
+      forward_env: false
+      guest_port: 22
+      keep_alive: true
+      proxy_command: 
+      ssh_command: 
+      pty: false
+      shell: bash -l
+      sudo_command: sudo -E -H %c
+      export_command_template: export %ENV_KEY%="%ENV_VALUE%"
+      default: !ruby/object:VagrantPlugins::Kernel_V2::SSHConnectConfig
+        host: 
+        port: 22
+        config: 
+        private_key_path: 
+        username: vagrant
+        password: 
+        insert_key: true
+        keys_only: true
+        paranoid: false
+        verify_host_key: :never
+        compression: true
+        dsa_authentication: true
+        extra_args: 
+        remote_user: vagrant
+        __invalid_methods: !ruby/object:Set
+          hash: {}
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :package: !ruby/object:VagrantPlugins::Kernel_V2::PackageConfig
+      name: 
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :push: !ruby/object:VagrantPlugins::Kernel_V2::PushConfig
+      logger: &46 !ruby/object:Log4r::Logger
+        fullname: vagrant::config::push
+        outputters: []
+        additive: true
+        name: push
+        path: vagrant::config
+        parent: &2 !ruby/object:Log4r::Logger
+          fullname: vagrant::config
+          outputters: []
+          additive: true
+          name: config
+          path: vagrant
+          parent: *1
+          level: 0
+          trace: false
+        level: 0
+        trace: false
+      __defined_pushes: {}
+      __compiled_pushes: {}
+      __finalized: true
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+    :vagrant: !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfig
+      host: :detect
+      sensitive: 
+      plugins: {}
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :vm: !ruby/object:VagrantPlugins::Kernel_V2::VMConfig
+      logger: &3 !ruby/object:Log4r::Logger
+        fullname: vagrant::config::vm
+        outputters: []
+        additive: true
+        name: vm
+        path: vagrant::config
+        parent: *2
+        level: 0
+        trace: false
+      allowed_synced_folder_types: 
+      base_mac: 
+      base_address: 
+      boot_timeout: 300
+      box: digital_ocean
+      ignore_box_vagrantfile: false
+      box_check_update: true
+      box_download_ca_cert: 
+      box_download_ca_path: 
+      box_download_checksum: ''
+      box_download_checksum_type: 
+      box_download_client_cert: 
+      box_download_insecure: false
+      box_download_location_trusted: false
+      box_url:
+      - https://github.com/devopsgroup-io/vagrant-digitalocean/raw/master/box/digital_ocean.box
+      box_version: 
+      clone: 
+      communicator: 
+      graceful_halt_timeout: 60
+      guest: 
+      hostname: dbserver
+      post_up_message: ''
+      provisioners:
+      - !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfigProvisioner
+        logger: &40 !ruby/object:Log4r::Logger
+          fullname: vagrant::config::vm::provisioner
+          outputters: []
+          additive: true
+          name: provisioner
+          path: vagrant::config::vm
+          parent: !ruby/object:Log4r::Logger
+            fullname: vagrant::config::vm
+            outputters: []
+            additive: true
+            name: vm
+            path: vagrant::config
+            parent: &6 !ruby/object:Log4r::Logger
+              fullname: vagrant::config
+              outputters: []
+              additive: true
+              name: config
+              path: vagrant
+              parent: *1
+              level: 0
+              trace: false
+            level: 0
+            trace: false
+          level: 0
+          trace: false
+        id: f9c32d9b-7d33-47df-ae10-0ee3dc3b70f2
+        config: !ruby/object:VagrantPlugins::Shell::Config
+          args: 
+          inline: |2
+                    # echo "Installing MongoDB"
+                    # wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+                    # echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+                    # sudo apt-get update
+                    # # sudo apt-get install -y mongodb-org-shell mongodb-org-server mongodb-org-mongos mongodb-org
+                    # sudo apt-get install -y mongodb-org
+
+                    # sudo mkdir -p /data/db
+                    # sudo sed -i '/  bindIp:/ s/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+
+                    # sudo systemctl start mongod
+                    # mongorestore --gzip /vagrant/dump
+          path: 
+          md5: 
+          sha1: 
+          env: {}
+          upload_path: "/tmp/vagrant-shell"
+          privileged: true
+          binary: false
+          keep_color: false
+          name: 
+          sensitive: false
+          reboot: false
+          reset: false
+          powershell_args: "-ExecutionPolicy Bypass"
+          powershell_elevated_interactive: false
+        invalid: false
+        name: 
+        preserve_order: false
+        run: 
+        type: :shell
+        config_class: &41 !ruby/class 'VagrantPlugins::Shell::Config'
+      usable_port_range: &52 !ruby/range
+        begin: 2200
+        end: 2250
+        excl: false
+      __compiled_provider_configs:
+        :digital_ocean: &62 !ruby/object:VagrantPlugins::DigitalOcean::Config
+          token: ecf525dc313f65b4752f41bcf782708469917328aa6bc312080ab7c7d2958d99
+          image: ubuntu-18-04-x64
+          region: fra1
+          size: 1gb
+          private_networking: false
+          ipv6: false
+          backups_enable: &4 !ruby/object {}
+          ca_path: 
+          ssh_key_name: ITU
+          setup: true
+          user_data: 
+          monitoring: false
+          tags: 
+          volumes: 
+          __invalid_methods: !ruby/object:Set
+            hash:
+              privatenetworking: true
+      __defined_vm_keys:
+      - :dbserver
+      __defined_vms:
+        :dbserver: !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfigSubVM
+          config_procs:
+          - &7
+            - '2'
+            - &39 !ruby/object:Proc {}
+          options:
+            :primary: true
+            :config_version: '2'
+      __finalized: true
+      __networks:
+        forwarded_port-ssh:
+        - :forwarded_port
+        - :guest: 22
+          :host: 2222
+          :host_ip: 127.0.0.1
+          :id: ssh
+          :auto_correct: true
+          :protocol: tcp
+      __providers:
+        :digital_ocean:
+        - &42 !ruby/object:Proc {}
+      __provider_order:
+      - :digital_ocean
+      __provider_overrides:
+        :digital_ocean: []
+      __synced_folders:
+        "/vagrant":
+          :type: :rsync
+          :guestpath: "/vagrant"
+          :hostpath: "."
+          :disabled: false
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+    :trigger: &67 !ruby/object:VagrantPlugins::Kernel_V2::TriggerConfig
+      logger: &43 !ruby/object:Log4r::Logger
+        fullname: vagrant::config::trigger
+        outputters: []
+        additive: true
+        name: trigger
+        path: vagrant::config
+        parent: *2
+        level: 0
+        trace: false
+      _before_triggers: []
+      _after_triggers:
+      - !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfigTrigger
+        logger: &44 !ruby/object:Log4r::Logger
+          fullname: vagrant::config::vm::trigger::config
+          outputters: []
+          additive: true
+          name: config
+          path: vagrant::config::vm::trigger
+          parent: *3
+          level: 0
+          trace: false
+        name: 
+        info: Writing dbserver's IP to file...
+        warn: 
+        on_error: :halt
+        ignore: []
+        only_on: 
+        run: 
+        run_remote: 
+        exit_codes:
+        - 0
+        abort: 
+        ruby: 
+        type: :action
+        id: 46ed36b3-285d-438d-9090-1e709a68a935
+        command: :up
+        ruby_block: &45 !ruby/object:Proc {}
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :rdp: !ruby/object:VagrantPlugins::CommandRDP::Config
+      port: 3389
+      search_port: 3389
+      username: 
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :winrm: !ruby/object:VagrantPlugins::CommunicatorWinRM::Config
+      username: vagrant
+      password: vagrant
+      host: 
+      port: 5985
+      guest_port: 5985
+      max_tries: 20
+      retry_delay: 2
+      timeout: 1800
+      transport: :negotiate
+      ssl_peer_verification: true
+      execution_time_limit: PT2H
+      basic_auth_only: false
+      codepage: 
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :winssh: !ruby/object:VagrantPlugins::CommunicatorWinSSH::Config
+      host: 
+      port: 
+      config: 
+      private_key_path: 
+      username: 
+      password: 
+      insert_key: true
+      keys_only: true
+      paranoid: false
+      verify_host_key: :never
+      compression: true
+      dsa_authentication: true
+      extra_args: 
+      remote_user: 
+      forward_agent: false
+      forward_x11: false
+      forward_env: false
+      guest_port: 22
+      keep_alive: true
+      proxy_command: 
+      ssh_command: 
+      pty: false
+      shell: cmd
+      sudo_command: "%c"
+      export_command_template: set %ENV_KEY%="%ENV_VALUE%"
+      default: !ruby/object:VagrantPlugins::Kernel_V2::SSHConnectConfig
+        host: 
+        port: 22
+        config: 
+        private_key_path: 
+        username: vagrant
+        password: 
+        insert_key: true
+        keys_only: true
+        paranoid: false
+        verify_host_key: :never
+        compression: true
+        dsa_authentication: true
+        extra_args: 
+        remote_user: vagrant
+        __invalid_methods: !ruby/object:Set
+          hash: {}
+      upload_directory: C:\Windows\Temp
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :solaris11: !ruby/object:VagrantPlugins::GuestSolaris11::Config
+      halt_timeout: *4
+      halt_check_interval: *4
+      suexec_cmd: sudo
+      device: net
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :smartos: !ruby/object:VagrantPlugins::GuestSmartos::Config
+      suexec_cmd: pfexec
+      device: e1000g
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :windows: !ruby/object:VagrantPlugins::GuestWindows::Config
+      set_work_network: false
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+    :solaris: !ruby/object:VagrantPlugins::GuestSolaris::Config
+      halt_timeout: *4
+      halt_check_interval: *4
+      suexec_cmd: sudo
+      device: e1000g
+      __invalid_methods: !ruby/object:Set
+        hash: {}
+      __finalized: true
+  config_map: !ruby/object:Vagrant::Registry
+    items:
+      :nfs: &9 !ruby/object:Proc {}
+      :smb: &10 !ruby/object:Proc {}
+      :ssh: &11 !ruby/object:Proc {}
+      :package: &12 !ruby/object:Proc {}
+      :push: &13 !ruby/object:Proc {}
+      :vagrant: &14 !ruby/object:Proc {}
+      :vm: &15 !ruby/object:Proc {}
+      :trigger: &16 !ruby/object:Proc {}
+      :rdp: &17 !ruby/object:Proc {}
+      :winrm: &18 !ruby/object:Proc {}
+      :winssh: &19 !ruby/object:Proc {}
+      :solaris11: &20 !ruby/object:Proc {}
+      :smartos: &21 !ruby/object:Proc {}
+      :windows: &22 !ruby/object:Proc {}
+      :solaris: &23 !ruby/object:Proc {}
+    results_cache:
+      :nfs: &26 !ruby/class 'VagrantPlugins::SyncedFolderNFS::Config'
+      :smb: &27 !ruby/class 'VagrantPlugins::SyncedFolderSMB::Config'
+      :ssh: &25 !ruby/class 'VagrantPlugins::Kernel_V2::SSHConfig'
+      :package: &28 !ruby/class 'VagrantPlugins::Kernel_V2::PackageConfig'
+      :push: &29 !ruby/class 'VagrantPlugins::Kernel_V2::PushConfig'
+      :vagrant: &30 !ruby/class 'VagrantPlugins::Kernel_V2::VagrantConfig'
+      :vm: &24 !ruby/class 'VagrantPlugins::Kernel_V2::VMConfig'
+      :trigger: &31 !ruby/class 'VagrantPlugins::Kernel_V2::TriggerConfig'
+      :rdp: &32 !ruby/class 'VagrantPlugins::CommandRDP::Config'
+      :winrm: &33 !ruby/class 'VagrantPlugins::CommunicatorWinRM::Config'
+      :winssh: &34 !ruby/class 'VagrantPlugins::CommunicatorWinSSH::Config'
+      :solaris11: &35 !ruby/class 'VagrantPlugins::GuestSolaris11::Config'
+      :smartos: &36 !ruby/class 'VagrantPlugins::GuestSmartos::Config'
+      :windows: &37 !ruby/class 'VagrantPlugins::GuestWindows::Config'
+      :solaris: &38 !ruby/class 'VagrantPlugins::GuestSolaris::Config'
+  missing_key_calls: !ruby/object:Set
+    hash: {}
+  logger: !ruby/object:Log4r::Logger
+    fullname: vagrant::config
+    outputters: []
+    additive: true
+    name: config
+    path: vagrant
+    parent: *1
+    level: 0
+    trace: false
+data_dir: !ruby/object:Pathname
+  path: "/Users/ropf/Documents/workspace/Python/flask-minitwit-mongodb/.vagrant/machines/dbserver/digital_ocean"
+env: &58 !ruby/object:Vagrant::Environment
+  cwd: &5 !ruby/object:Pathname
+    path: "/Users/ropf/Documents/workspace/Python/flask-minitwit-mongodb"
+  home_path: !ruby/object:Pathname
+    path: "/Users/ropf/.vagrant.d"
+  vagrantfile_name: 
+  ui: &66 !ruby/object:Vagrant::UI::Colored
+    logger: !ruby/object:Log4r::Logger
+      fullname: vagrant::ui::interface
+      outputters: []
+      additive: true
+      name: interface
+      path: vagrant::ui
+      parent: *1
+      level: 0
+      trace: false
+    opts:
+      :color: :default
+    stdin: &63 !ruby/object:IO {}
+    stdout: &64 !ruby/object:IO {}
+    stderr: &65 !ruby/object:IO {}
+    lock: !ruby/object:Thread::Mutex {}
+  ui_class: !ruby/class 'Vagrant::UI::Colored'
+  batch_lock: !ruby/object:Thread::Mutex {}
+  locks: {}
+  logger: !ruby/object:Log4r::Logger
+    fullname: vagrant::environment
+    outputters: []
+    additive: true
+    name: environment
+    path: vagrant
+    parent: *1
+    level: 0
+    trace: false
+  boxes_path: &54 !ruby/object:Pathname
+    path: "/Users/ropf/.vagrant.d/boxes"
+  data_dir: !ruby/object:Pathname
+    path: "/Users/ropf/.vagrant.d/data"
+  gems_path: !ruby/object:Pathname
+    path: "/Users/ropf/.vagrant.d/gems/2.4.6"
+  tmp_path: &55 !ruby/object:Pathname
+    path: "/Users/ropf/.vagrant.d/tmp"
+  machine_index_dir: &56 !ruby/object:Pathname
+    path: "/Users/ropf/.vagrant.d/data/machine-index"
+  aliases_path: !ruby/object:Pathname
+    path: "/Users/ropf/.vagrant.d/aliases"
+  root_path: *5
+  local_data_path: !ruby/object:Pathname
+    path: "/Users/ropf/Documents/workspace/Python/flask-minitwit-mongodb/.vagrant"
+  default_private_key_path: !ruby/object:Pathname
+    path: "/Users/ropf/.vagrant.d/insecure_private_key"
+  config_loader: &49 !ruby/object:Vagrant::Config::Loader
+    logger: !ruby/object:Log4r::Logger
+      fullname: vagrant::config::loader
+      outputters: []
+      additive: true
+      name: loader
+      path: vagrant::config
+      parent: *6
+      level: 0
+      trace: false
+    config_cache:
+      &47 !ruby/object:Proc {}:
+      - !ruby/object:Vagrant::Config::V2::Root
+        keys:
+          :vm: !ruby/object:VagrantPlugins::Kernel_V2::VMConfig
+            logger: &51 !ruby/object:Log4r::Logger
+              fullname: vagrant::config::vm
+              outputters: []
+              additive: true
+              name: vm
+              path: vagrant::config
+              parent: &8 !ruby/object:Log4r::Logger
+                fullname: vagrant::config
+                outputters: []
+                additive: true
+                name: config
+                path: vagrant
+                parent: *1
+                level: 0
+                trace: false
+              level: 0
+              trace: false
+            allowed_synced_folder_types: *4
+            base_mac: *4
+            base_address: *4
+            boot_timeout: *4
+            box: digital_ocean
+            ignore_box_vagrantfile: *4
+            box_check_update: *4
+            box_download_ca_cert: *4
+            box_download_ca_path: *4
+            box_download_checksum: *4
+            box_download_checksum_type: *4
+            box_download_client_cert: *4
+            box_download_insecure: *4
+            box_download_location_trusted: *4
+            box_url: https://github.com/devopsgroup-io/vagrant-digitalocean/raw/master/box/digital_ocean.box
+            box_version: *4
+            clone: *4
+            communicator: *4
+            graceful_halt_timeout: *4
+            guest: *4
+            hostname: *4
+            post_up_message: *4
+            provisioners: []
+            usable_port_range: *4
+            __compiled_provider_configs: {}
+            __defined_vm_keys:
+            - :dbserver
+            __defined_vms:
+              :dbserver: !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfigSubVM
+                config_procs:
+                - *7
+                options:
+                  :primary: true
+                  :config_version: '2'
+            __finalized: false
+            __networks: {}
+            __providers: {}
+            __provider_order: []
+            __provider_overrides: {}
+            __synced_folders:
+              "/vagrant":
+                :type: :rsync
+                :guestpath: "/vagrant"
+                :hostpath: "."
+                :disabled: false
+          :ssh: !ruby/object:VagrantPlugins::Kernel_V2::SSHConfig
+            host: *4
+            port: *4
+            config: *4
+            private_key_path: "~/.ssh/id_rsa"
+            username: *4
+            password: *4
+            insert_key: *4
+            keys_only: *4
+            paranoid: *4
+            verify_host_key: *4
+            compression: *4
+            dsa_authentication: *4
+            extra_args: *4
+            remote_user: *4
+            forward_agent: *4
+            forward_x11: *4
+            forward_env: *4
+            guest_port: *4
+            keep_alive: *4
+            proxy_command: *4
+            ssh_command: *4
+            pty: *4
+            shell: *4
+            sudo_command: *4
+            export_command_template: *4
+            default: !ruby/object:VagrantPlugins::Kernel_V2::SSHConnectConfig
+              host: *4
+              port: *4
+              config: *4
+              private_key_path: *4
+              username: *4
+              password: *4
+              insert_key: *4
+              keys_only: *4
+              paranoid: *4
+              verify_host_key: *4
+              compression: *4
+              dsa_authentication: *4
+              extra_args: *4
+              remote_user: *4
+          :nfs: !ruby/object:VagrantPlugins::SyncedFolderNFS::Config
+            functional: *4
+            map_uid: *4
+            map_gid: *4
+            verify_installed: *4
+          :smb: !ruby/object:VagrantPlugins::SyncedFolderSMB::Config
+            functional: *4
+          :package: !ruby/object:VagrantPlugins::Kernel_V2::PackageConfig
+            name: *4
+          :push: !ruby/object:VagrantPlugins::Kernel_V2::PushConfig
+            logger: &50 !ruby/object:Log4r::Logger
+              fullname: vagrant::config::push
+              outputters: []
+              additive: true
+              name: push
+              path: vagrant::config
+              parent: *8
+              level: 0
+              trace: false
+            __defined_pushes: {}
+            __compiled_pushes: {}
+            __finalized: false
+          :vagrant: !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfig
+            host: *4
+            sensitive: *4
+            plugins: *4
+          :trigger: !ruby/object:VagrantPlugins::Kernel_V2::TriggerConfig
+            logger: &53 !ruby/object:Log4r::Logger
+              fullname: vagrant::config::trigger
+              outputters: []
+              additive: true
+              name: trigger
+              path: vagrant::config
+              parent: *8
+              level: 0
+              trace: false
+            _before_triggers: []
+            _after_triggers: []
+          :rdp: !ruby/object:VagrantPlugins::CommandRDP::Config
+            port: *4
+            search_port: *4
+            username: *4
+          :winrm: !ruby/object:VagrantPlugins::CommunicatorWinRM::Config
+            username: *4
+            password: *4
+            host: *4
+            port: *4
+            guest_port: *4
+            max_tries: *4
+            retry_delay: *4
+            timeout: *4
+            transport: *4
+            ssl_peer_verification: *4
+            execution_time_limit: *4
+            basic_auth_only: *4
+            codepage: *4
+          :winssh: !ruby/object:VagrantPlugins::CommunicatorWinSSH::Config
+            host: *4
+            port: *4
+            config: *4
+            private_key_path: *4
+            username: *4
+            password: *4
+            insert_key: *4
+            keys_only: *4
+            paranoid: *4
+            verify_host_key: *4
+            compression: *4
+            dsa_authentication: *4
+            extra_args: *4
+            remote_user: *4
+            forward_agent: *4
+            forward_x11: *4
+            forward_env: *4
+            guest_port: *4
+            keep_alive: *4
+            proxy_command: *4
+            ssh_command: *4
+            pty: *4
+            shell: *4
+            sudo_command: *4
+            export_command_template: *4
+            default: !ruby/object:VagrantPlugins::Kernel_V2::SSHConnectConfig
+              host: *4
+              port: *4
+              config: *4
+              private_key_path: *4
+              username: *4
+              password: *4
+              insert_key: *4
+              keys_only: *4
+              paranoid: *4
+              verify_host_key: *4
+              compression: *4
+              dsa_authentication: *4
+              extra_args: *4
+              remote_user: *4
+            upload_directory: *4
+          :solaris11: !ruby/object:VagrantPlugins::GuestSolaris11::Config
+            halt_timeout: *4
+            halt_check_interval: *4
+            suexec_cmd: *4
+            device: *4
+          :smartos: !ruby/object:VagrantPlugins::GuestSmartos::Config
+            suexec_cmd: pfexec
+            device: e1000g
+          :windows: !ruby/object:VagrantPlugins::GuestWindows::Config
+            set_work_network: *4
+          :solaris: !ruby/object:VagrantPlugins::GuestSolaris::Config
+            halt_timeout: *4
+            halt_check_interval: *4
+            suexec_cmd: *4
+            device: *4
+        config_map: !ruby/object:Vagrant::Registry
+          items:
+            :nfs: *9
+            :smb: *10
+            :ssh: *11
+            :package: *12
+            :push: *13
+            :vagrant: *14
+            :vm: *15
+            :trigger: *16
+            :rdp: *17
+            :winrm: *18
+            :winssh: *19
+            :solaris11: *20
+            :smartos: *21
+            :windows: *22
+            :solaris: *23
+          results_cache:
+            :vm: *24
+            :ssh: *25
+            :nfs: *26
+            :smb: *27
+            :package: *28
+            :push: *29
+            :vagrant: *30
+            :trigger: *31
+            :rdp: *32
+            :winrm: *33
+            :winssh: *34
+            :solaris11: *35
+            :smartos: *36
+            :windows: *37
+            :solaris: *38
+        missing_key_calls: !ruby/object:Set
+          hash: {}
+        logger: *8
+      - []
+      - []
+      *39:
+      - !ruby/object:Vagrant::Config::V2::Root
+        keys:
+          :vm: !ruby/object:VagrantPlugins::Kernel_V2::VMConfig
+            logger: *3
+            allowed_synced_folder_types: *4
+            base_mac: *4
+            base_address: *4
+            boot_timeout: *4
+            box: *4
+            ignore_box_vagrantfile: *4
+            box_check_update: *4
+            box_download_ca_cert: *4
+            box_download_ca_path: *4
+            box_download_checksum: *4
+            box_download_checksum_type: *4
+            box_download_client_cert: *4
+            box_download_insecure: *4
+            box_download_location_trusted: *4
+            box_url: *4
+            box_version: *4
+            clone: *4
+            communicator: *4
+            graceful_halt_timeout: *4
+            guest: *4
+            hostname: dbserver
+            post_up_message: *4
+            provisioners:
+            - !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfigProvisioner
+              logger: *40
+              id: f9c32d9b-7d33-47df-ae10-0ee3dc3b70f2
+              config: !ruby/object:VagrantPlugins::Shell::Config
+                args: *4
+                inline: |2
+                          # echo "Installing MongoDB"
+                          # wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+                          # echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+                          # sudo apt-get update
+                          # # sudo apt-get install -y mongodb-org-shell mongodb-org-server mongodb-org-mongos mongodb-org
+                          # sudo apt-get install -y mongodb-org
+
+                          # sudo mkdir -p /data/db
+                          # sudo sed -i '/  bindIp:/ s/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+
+                          # sudo systemctl start mongod
+                          # mongorestore --gzip /vagrant/dump
+                path: *4
+                md5: *4
+                sha1: *4
+                env: *4
+                upload_path: *4
+                privileged: *4
+                binary: *4
+                keep_color: *4
+                name: *4
+                sensitive: *4
+                reboot: *4
+                reset: *4
+                powershell_args: *4
+                powershell_elevated_interactive: *4
+              invalid: false
+              name: 
+              preserve_order: false
+              run: 
+              type: :shell
+              config_class: *41
+            usable_port_range: *4
+            __compiled_provider_configs: {}
+            __defined_vm_keys: []
+            __defined_vms: {}
+            __finalized: false
+            __networks: {}
+            __providers:
+              :digital_ocean:
+              - *42
+            __provider_order:
+            - :digital_ocean
+            __provider_overrides:
+              :digital_ocean: []
+            __synced_folders: {}
+          :trigger: !ruby/object:VagrantPlugins::Kernel_V2::TriggerConfig
+            logger: *43
+            _before_triggers: []
+            _after_triggers:
+            - !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfigTrigger
+              logger: *44
+              name: *4
+              info: Writing dbserver's IP to file...
+              warn: *4
+              on_error: *4
+              ignore: *4
+              only_on: *4
+              run: *4
+              run_remote: *4
+              exit_codes: *4
+              abort: *4
+              ruby: *4
+              type: *4
+              id: 46ed36b3-285d-438d-9090-1e709a68a935
+              command: :up
+              ruby_block: *45
+          :nfs: !ruby/object:VagrantPlugins::SyncedFolderNFS::Config
+            functional: *4
+            map_uid: *4
+            map_gid: *4
+            verify_installed: *4
+          :smb: !ruby/object:VagrantPlugins::SyncedFolderSMB::Config
+            functional: *4
+          :ssh: !ruby/object:VagrantPlugins::Kernel_V2::SSHConfig
+            host: *4
+            port: *4
+            config: *4
+            private_key_path: *4
+            username: *4
+            password: *4
+            insert_key: *4
+            keys_only: *4
+            paranoid: *4
+            verify_host_key: *4
+            compression: *4
+            dsa_authentication: *4
+            extra_args: *4
+            remote_user: *4
+            forward_agent: *4
+            forward_x11: *4
+            forward_env: *4
+            guest_port: *4
+            keep_alive: *4
+            proxy_command: *4
+            ssh_command: *4
+            pty: *4
+            shell: *4
+            sudo_command: *4
+            export_command_template: *4
+            default: !ruby/object:VagrantPlugins::Kernel_V2::SSHConnectConfig
+              host: *4
+              port: *4
+              config: *4
+              private_key_path: *4
+              username: *4
+              password: *4
+              insert_key: *4
+              keys_only: *4
+              paranoid: *4
+              verify_host_key: *4
+              compression: *4
+              dsa_authentication: *4
+              extra_args: *4
+              remote_user: *4
+          :package: !ruby/object:VagrantPlugins::Kernel_V2::PackageConfig
+            name: *4
+          :push: !ruby/object:VagrantPlugins::Kernel_V2::PushConfig
+            logger: *46
+            __defined_pushes: {}
+            __compiled_pushes: {}
+            __finalized: false
+          :vagrant: !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfig
+            host: *4
+            sensitive: *4
+            plugins: *4
+          :rdp: !ruby/object:VagrantPlugins::CommandRDP::Config
+            port: *4
+            search_port: *4
+            username: *4
+          :winrm: !ruby/object:VagrantPlugins::CommunicatorWinRM::Config
+            username: *4
+            password: *4
+            host: *4
+            port: *4
+            guest_port: *4
+            max_tries: *4
+            retry_delay: *4
+            timeout: *4
+            transport: *4
+            ssl_peer_verification: *4
+            execution_time_limit: *4
+            basic_auth_only: *4
+            codepage: *4
+          :winssh: !ruby/object:VagrantPlugins::CommunicatorWinSSH::Config
+            host: *4
+            port: *4
+            config: *4
+            private_key_path: *4
+            username: *4
+            password: *4
+            insert_key: *4
+            keys_only: *4
+            paranoid: *4
+            verify_host_key: *4
+            compression: *4
+            dsa_authentication: *4
+            extra_args: *4
+            remote_user: *4
+            forward_agent: *4
+            forward_x11: *4
+            forward_env: *4
+            guest_port: *4
+            keep_alive: *4
+            proxy_command: *4
+            ssh_command: *4
+            pty: *4
+            shell: *4
+            sudo_command: *4
+            export_command_template: *4
+            default: !ruby/object:VagrantPlugins::Kernel_V2::SSHConnectConfig
+              host: *4
+              port: *4
+              config: *4
+              private_key_path: *4
+              username: *4
+              password: *4
+              insert_key: *4
+              keys_only: *4
+              paranoid: *4
+              verify_host_key: *4
+              compression: *4
+              dsa_authentication: *4
+              extra_args: *4
+              remote_user: *4
+            upload_directory: *4
+          :solaris11: !ruby/object:VagrantPlugins::GuestSolaris11::Config
+            halt_timeout: *4
+            halt_check_interval: *4
+            suexec_cmd: *4
+            device: *4
+          :smartos: !ruby/object:VagrantPlugins::GuestSmartos::Config
+            suexec_cmd: pfexec
+            device: e1000g
+          :windows: !ruby/object:VagrantPlugins::GuestWindows::Config
+            set_work_network: *4
+          :solaris: !ruby/object:VagrantPlugins::GuestSolaris::Config
+            halt_timeout: *4
+            halt_check_interval: *4
+            suexec_cmd: *4
+            device: *4
+        config_map: !ruby/object:Vagrant::Registry
+          items:
+            :nfs: *9
+            :smb: *10
+            :ssh: *11
+            :package: *12
+            :push: *13
+            :vagrant: *14
+            :vm: *15
+            :trigger: *16
+            :rdp: *17
+            :winrm: *18
+            :winssh: *19
+            :solaris11: *20
+            :smartos: *21
+            :windows: *22
+            :solaris: *23
+          results_cache:
+            :vm: *24
+            :trigger: *31
+            :nfs: *26
+            :smb: *27
+            :ssh: *25
+            :package: *28
+            :push: *29
+            :vagrant: *30
+            :rdp: *32
+            :winrm: *33
+            :winssh: *34
+            :solaris11: *35
+            :smartos: *36
+            :windows: *37
+            :solaris: *38
+        missing_key_calls: !ruby/object:Set
+          hash: {}
+        logger: *2
+      - []
+      - []
+    proc_cache:
+      ? !ruby/object:Pathname
+        path: "/Users/ropf/Documents/workspace/Python/flask-minitwit-mongodb/Vagrantfile"
+      : - &48
+          - '2'
+          - *47
+      *7:
+      - *7
+    sources:
+      :root:
+      - *48
+      2161039440_machine_dbserver:
+      - *7
+    versions: !ruby/object:Vagrant::Registry
+      items:
+        '1': !ruby/object:Proc {}
+        '2': !ruby/object:Proc {}
+      results_cache:
+        '2': !ruby/class 'Vagrant::Config::V2::Loader'
+    version_order:
+    - '1'
+    - '2'
+  vagrantfile: &59 !ruby/object:Vagrant::Vagrantfile
+    keys:
+    - :home
+    - :root
+    loader: *49
+    config: !ruby/object:Vagrant::Config::V2::Root
+      keys:
+        :nfs: !ruby/object:VagrantPlugins::SyncedFolderNFS::Config
+          functional: true
+          map_uid: :auto
+          map_gid: :auto
+          verify_installed: true
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :smb: !ruby/object:VagrantPlugins::SyncedFolderSMB::Config
+          functional: true
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :ssh: !ruby/object:VagrantPlugins::Kernel_V2::SSHConfig
+          host: 
+          port: 
+          config: 
+          private_key_path:
+          - "~/.ssh/id_rsa"
+          username: 
+          password: 
+          insert_key: true
+          keys_only: true
+          paranoid: false
+          verify_host_key: :never
+          compression: true
+          dsa_authentication: true
+          extra_args: 
+          remote_user: 
+          forward_agent: false
+          forward_x11: false
+          forward_env: false
+          guest_port: 22
+          keep_alive: true
+          proxy_command: 
+          ssh_command: 
+          pty: false
+          shell: bash -l
+          sudo_command: sudo -E -H %c
+          export_command_template: export %ENV_KEY%="%ENV_VALUE%"
+          default: !ruby/object:VagrantPlugins::Kernel_V2::SSHConnectConfig
+            host: 
+            port: 22
+            config: 
+            private_key_path: 
+            username: vagrant
+            password: 
+            insert_key: true
+            keys_only: true
+            paranoid: false
+            verify_host_key: :never
+            compression: true
+            dsa_authentication: true
+            extra_args: 
+            remote_user: vagrant
+            __invalid_methods: !ruby/object:Set
+              hash: {}
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :package: !ruby/object:VagrantPlugins::Kernel_V2::PackageConfig
+          name: 
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :push: !ruby/object:VagrantPlugins::Kernel_V2::PushConfig
+          logger: *50
+          __defined_pushes: {}
+          __compiled_pushes: {}
+          __finalized: true
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+        :vagrant: !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfig
+          host: :detect
+          sensitive: 
+          plugins: {}
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :vm: !ruby/object:VagrantPlugins::Kernel_V2::VMConfig
+          logger: *51
+          allowed_synced_folder_types: 
+          base_mac: 
+          base_address: 
+          boot_timeout: 300
+          box: digital_ocean
+          ignore_box_vagrantfile: false
+          box_check_update: true
+          box_download_ca_cert: 
+          box_download_ca_path: 
+          box_download_checksum: ''
+          box_download_checksum_type: 
+          box_download_client_cert: 
+          box_download_insecure: false
+          box_download_location_trusted: false
+          box_url:
+          - https://github.com/devopsgroup-io/vagrant-digitalocean/raw/master/box/digital_ocean.box
+          box_version: 
+          clone: 
+          communicator: 
+          graceful_halt_timeout: 60
+          guest: 
+          hostname: 
+          post_up_message: ''
+          provisioners: []
+          usable_port_range: *52
+          __compiled_provider_configs: {}
+          __defined_vm_keys:
+          - :dbserver
+          __defined_vms:
+            :dbserver: !ruby/object:VagrantPlugins::Kernel_V2::VagrantConfigSubVM
+              config_procs:
+              - *7
+              options:
+                :primary: true
+                :config_version: '2'
+                :autostart: true
+          __finalized: true
+          __networks:
+            forwarded_port-ssh:
+            - :forwarded_port
+            - :guest: 22
+              :host: 2222
+              :host_ip: 127.0.0.1
+              :id: ssh
+              :auto_correct: true
+              :protocol: tcp
+          __providers: {}
+          __provider_order: []
+          __provider_overrides: {}
+          __synced_folders:
+            "/vagrant":
+              :type: :rsync
+              :guestpath: "/vagrant"
+              :hostpath: "."
+              :disabled: false
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+        :trigger: !ruby/object:VagrantPlugins::Kernel_V2::TriggerConfig
+          logger: *53
+          _before_triggers: []
+          _after_triggers: []
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :rdp: !ruby/object:VagrantPlugins::CommandRDP::Config
+          port: 3389
+          search_port: 3389
+          username: 
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :winrm: !ruby/object:VagrantPlugins::CommunicatorWinRM::Config
+          username: vagrant
+          password: vagrant
+          host: 
+          port: 5985
+          guest_port: 5985
+          max_tries: 20
+          retry_delay: 2
+          timeout: 1800
+          transport: :negotiate
+          ssl_peer_verification: true
+          execution_time_limit: PT2H
+          basic_auth_only: false
+          codepage: 
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :winssh: !ruby/object:VagrantPlugins::CommunicatorWinSSH::Config
+          host: 
+          port: 
+          config: 
+          private_key_path: 
+          username: 
+          password: 
+          insert_key: true
+          keys_only: true
+          paranoid: false
+          verify_host_key: :never
+          compression: true
+          dsa_authentication: true
+          extra_args: 
+          remote_user: 
+          forward_agent: false
+          forward_x11: false
+          forward_env: false
+          guest_port: 22
+          keep_alive: true
+          proxy_command: 
+          ssh_command: 
+          pty: false
+          shell: cmd
+          sudo_command: "%c"
+          export_command_template: set %ENV_KEY%="%ENV_VALUE%"
+          default: !ruby/object:VagrantPlugins::Kernel_V2::SSHConnectConfig
+            host: 
+            port: 22
+            config: 
+            private_key_path: 
+            username: vagrant
+            password: 
+            insert_key: true
+            keys_only: true
+            paranoid: false
+            verify_host_key: :never
+            compression: true
+            dsa_authentication: true
+            extra_args: 
+            remote_user: vagrant
+            __invalid_methods: !ruby/object:Set
+              hash: {}
+          upload_directory: C:\Windows\Temp
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :solaris11: !ruby/object:VagrantPlugins::GuestSolaris11::Config
+          halt_timeout: *4
+          halt_check_interval: *4
+          suexec_cmd: sudo
+          device: net
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :smartos: !ruby/object:VagrantPlugins::GuestSmartos::Config
+          suexec_cmd: pfexec
+          device: e1000g
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :windows: !ruby/object:VagrantPlugins::GuestWindows::Config
+          set_work_network: false
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+        :solaris: !ruby/object:VagrantPlugins::GuestSolaris::Config
+          halt_timeout: *4
+          halt_check_interval: *4
+          suexec_cmd: sudo
+          device: e1000g
+          __invalid_methods: !ruby/object:Set
+            hash: {}
+          __finalized: true
+      config_map: !ruby/object:Vagrant::Registry
+        items:
+          :nfs: *9
+          :smb: *10
+          :ssh: *11
+          :package: *12
+          :push: *13
+          :vagrant: *14
+          :vm: *15
+          :trigger: *16
+          :rdp: *17
+          :winrm: *18
+          :winssh: *19
+          :solaris11: *20
+          :smartos: *21
+          :windows: *22
+          :solaris: *23
+        results_cache:
+          :nfs: *26
+          :smb: *27
+          :ssh: *25
+          :package: *28
+          :push: *29
+          :vagrant: *30
+          :vm: *24
+          :trigger: *31
+          :rdp: *32
+          :winrm: *33
+          :winssh: *34
+          :solaris11: *35
+          :smartos: *36
+          :windows: *37
+          :solaris: *38
+      missing_key_calls: !ruby/object:Set
+        hash: {}
+      logger: !ruby/object:Log4r::Logger
+        fullname: vagrant::config
+        outputters: []
+        additive: true
+        name: config
+        path: vagrant
+        parent: *1
+        level: 0
+        trace: false
+    logger: !ruby/object:Log4r::Logger
+      fullname: vagrant::vagrantfile
+      outputters: []
+      additive: true
+      name: vagrantfile
+      path: vagrant
+      parent: *1
+      level: 0
+      trace: false
+  _boxes: !ruby/object:Vagrant::BoxCollection
+    directory: *54
+    hook: !ruby/object:Method {}
+    lock: !ruby/object:Monitor
+      mon_owner: 
+      mon_count: 0
+      mon_mutex: !ruby/object:Thread::Mutex {}
+    temp_root: *55
+    logger: !ruby/object:Log4r::Logger
+      fullname: vagrant::box_collection
+      outputters: []
+      additive: true
+      name: box_collection
+      path: vagrant
+      parent: *1
+      level: 0
+      trace: false
+  machine_index: !ruby/object:Vagrant::MachineIndex
+    data_dir: *56
+    index_file: !ruby/object:Pathname
+      path: "/Users/ropf/.vagrant.d/data/machine-index/index"
+    lock: !ruby/object:Monitor
+      mon_owner: 
+      mon_count: 0
+      mon_mutex: !ruby/object:Thread::Mutex {}
+    machines:
+      e85825f6d5dc44579d5a30614bc1f935:
+        local_data_path: "/Users/ropf/Documents/.vagrant"
+        name: default
+        provider: virtualbox
+        state: poweroff
+        vagrantfile_name: 
+        vagrantfile_path: "/Users/ropf/Documents"
+        updated_at: 
+        extra_data:
+          box:
+            name: senglin/win-10-enterprise-vs2015community
+            provider: virtualbox
+            version: 1.0.0
+      21c8a8c0d195495ea535c711c7ed345d:
+        local_data_path: "/Users/ropf/Documents/workspace/Python/flask-minitwit-mongodb/.vagrant"
+        name: dbserver
+        provider: digital_ocean
+        state: active
+        vagrantfile_name: 
+        vagrantfile_path: "/Users/ropf/Documents/workspace/Python/flask-minitwit-mongodb"
+        updated_at: 
+        extra_data: {}
+    machine_locks: {}
+  machines:
+    ? - :dbserver
+      - :digital_ocean
+    : *57
+  action_runner: !ruby/object:Vagrant::Action::Runner
+    globals: {}
+    lazy_globals: !ruby/object:Proc {}
+    logger: !ruby/object:Log4r::Logger
+      fullname: vagrant::action::runner
+      outputters: []
+      additive: true
+      name: runner
+      path: vagrant::action
+      parent: *1
+      level: 0
+      trace: false
+  host: !ruby/object:Vagrant::Host
+    cap_logger: !ruby/object:Log4r::Logger
+      fullname: vagrant::capability_host::vagrant::host
+      outputters: []
+      additive: true
+      name: host
+      path: vagrant::capability_host::vagrant
+      parent: *1
+      level: 0
+      trace: false
+    cap_host_chain:
+    - - :darwin
+      - !ruby/object:VagrantPlugins::HostDarwin::Host {}
+    - - :bsd
+      - !ruby/object:VagrantPlugins::HostBSD::Host {}
+    cap_args:
+    - *58
+    cap_caps:
+      :slackware: !ruby/object:Vagrant::Registry
+        items:
+          :nfs_check_command: !ruby/object:Proc {}
+          :nfs_start_command: !ruby/object:Proc {}
+        results_cache: {}
+      :bsd: !ruby/object:Vagrant::Registry
+        items:
+          :nfs_export: !ruby/object:Proc {}
+          :nfs_exports_template: !ruby/object:Proc {}
+          :nfs_installed: !ruby/object:Proc {}
+          :nfs_prune: !ruby/object:Proc {}
+          :nfs_restart_command: !ruby/object:Proc {}
+          :set_ssh_key_permissions: !ruby/object:Proc {}
+        results_cache: {}
+      :freebsd: !ruby/object:Vagrant::Registry
+        items:
+          :nfs_export: !ruby/object:Proc {}
+          :nfs_exports_template: !ruby/object:Proc {}
+          :nfs_restart_command: !ruby/object:Proc {}
+        results_cache: {}
+      :void: !ruby/object:Vagrant::Registry
+        items:
+          :nfs_installed: !ruby/object:Proc {}
+          :nfs_check_command: !ruby/object:Proc {}
+          :nfs_start_command: !ruby/object:Proc {}
+        results_cache: {}
+      :linux: !ruby/object:Vagrant::Registry
+        items:
+          :nfs_export: !ruby/object:Proc {}
+          :nfs_installed: !ruby/object:Proc {}
+          :nfs_prune: !ruby/object:Proc {}
+          :rdp_client: !ruby/object:Proc {}
+          :nfs_apply_command: !ruby/object:Proc {}
+          :nfs_check_command: !ruby/object:Proc {}
+          :nfs_start_command: !ruby/object:Proc {}
+          :set_ssh_key_permissions: !ruby/object:Proc {}
+        results_cache: {}
+      :arch: !ruby/object:Vagrant::Registry
+        items:
+          :nfs_installed: !ruby/object:Proc {}
+          :nfs_check_command: !ruby/object:Proc {}
+          :nfs_start_command: !ruby/object:Proc {}
+        results_cache: {}
+      :darwin: !ruby/object:Vagrant::Registry
+        items:
+          :provider_install_virtualbox: !ruby/object:Proc {}
+          :rdp_client: !ruby/object:Proc {}
+          :smb_installed: !ruby/object:Proc {}
+          :smb_prepare: !ruby/object:Proc {}
+          :smb_mount_options: !ruby/object:Proc {}
+          :smb_cleanup: !ruby/object:Proc {}
+          :smb_start: !ruby/object:Proc {}
+          :configured_ip_addresses: !ruby/object:Proc {}
+        results_cache: {}
+      :windows: !ruby/object:Vagrant::Registry
+        items:
+          :provider_install_virtualbox: !ruby/object:Proc {}
+          :nfs_installed: !ruby/object:Proc {}
+          :rdp_client: !ruby/object:Proc {}
+          :ps_client: !ruby/object:Proc {}
+          :smb_installed: !ruby/object:Proc {}
+          :smb_prepare: !ruby/object:Proc {}
+          :smb_cleanup: !ruby/object:Proc {}
+          :smb_mount_options: !ruby/object:Proc {}
+          :configured_ip_addresses: !ruby/object:Proc {}
+          :set_ssh_key_permissions: !ruby/object:Proc {}
+        results_cache: {}
+      :redhat: !ruby/object:Vagrant::Registry
+        items:
+          :nfs_check_command: !ruby/object:Proc {}
+          :nfs_start_command: !ruby/object:Proc {}
+        results_cache: {}
+      :gentoo: !ruby/object:Vagrant::Registry
+        items:
+          :nfs_check_command: !ruby/object:Proc {}
+          :nfs_start_command: !ruby/object:Proc {}
+        results_cache: {}
+      :suse: !ruby/object:Vagrant::Registry
+        items:
+          :nfs_installed: !ruby/object:Proc {}
+          :nfs_check_command: !ruby/object:Proc {}
+          :nfs_start_command: !ruby/object:Proc {}
+        results_cache: {}
+      :alt: !ruby/object:Vagrant::Registry
+        items:
+          :nfs_installed: !ruby/object:Proc {}
+          :nfs_check_command: !ruby/object:Proc {}
+          :nfs_start_command: !ruby/object:Proc {}
+        results_cache: {}
+vagrantfile: *59
+guest: !ruby/object:Vagrant::Guest
+  capabilities: &61
+    :debian: !ruby/object:Vagrant::Registry
+      items:
+        :docker_install: !ruby/object:Proc {}
+        :docker_start_service: !ruby/object:Proc {}
+        :chef_install: !ruby/object:Proc {}
+        :ansible_install: !ruby/object:Proc {}
+        :cfengine_install: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :nfs_client_install: !ruby/object:Proc {}
+        :rsync_install: !ruby/object:Proc {}
+        :smb_install: !ruby/object:Proc {}
+      results_cache: {}
+    :fedora: !ruby/object:Vagrant::Registry
+      items:
+        :docker_install: !ruby/object:Proc {}
+        :ansible_install: !ruby/object:Proc {}
+        :flavor: !ruby/object:Proc {}
+      results_cache: {}
+    :redhat: !ruby/object:Vagrant::Registry
+      items:
+        :docker_install: !ruby/object:Proc {}
+        :docker_start_service: !ruby/object:Proc {}
+        :chef_install: !ruby/object:Proc {}
+        :ansible_install: !ruby/object:Proc {}
+        :cfengine_install: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :flavor: !ruby/object:Proc {}
+        :network_scripts_dir: !ruby/object:Proc {}
+        :nfs_client_install: !ruby/object:Proc {}
+        :rsync_install: !ruby/object:Proc {}
+      results_cache: {}
+    :linux: !ruby/object:Vagrant::Registry
+      items:
+        :docker_installed: !ruby/object:Proc {}
+        :docker_configure_vagrant_user: !ruby/object:Proc {}
+        :docker_daemon_running: !ruby/object:Proc {}
+        :chef_installed: !ruby/object:Proc {}
+        :ansible_installed: !ruby/object:Proc {}
+        :cfengine_needs_bootstrap: !ruby/object:Proc {}
+        :cfengine_installed: !ruby/object:Proc {}
+        :choose_addressable_ip_addr: !ruby/object:Proc {}
+        :create_tmp_path: !ruby/object:Proc {}
+        :decompress_tgz: !ruby/object:Proc {}
+        :decompress_zip: !ruby/object:Proc {}
+        :halt: !ruby/object:Proc {}
+        :insert_public_key: !ruby/object:Proc {}
+        :shell_expand_guest_path: !ruby/object:Proc {}
+        :mount_nfs_folder: !ruby/object:Proc {}
+        :mount_smb_shared_folder: !ruby/object:Proc {}
+        :mount_virtualbox_shared_folder: !ruby/object:Proc {}
+        :network_interfaces: !ruby/object:Proc {}
+        :nfs_client_installed: !ruby/object:Proc {}
+        :port_open_check: !ruby/object:Proc {}
+        :read_ip_address: !ruby/object:Proc {}
+        :remove_public_key: !ruby/object:Proc {}
+        :rsync_installed: !ruby/object:Proc {}
+        :rsync_command: !ruby/object:Proc {}
+        :rsync_post: !ruby/object:Proc {}
+        :rsync_pre: !ruby/object:Proc {}
+        :unmount_virtualbox_shared_folder: !ruby/object:Proc {}
+      results_cache:
+        :rsync_installed: &60 !ruby/class 'VagrantPlugins::GuestLinux::Cap::RSync'
+        :rsync_command: *60
+        :rsync_pre: *60
+        :rsync_post: *60
+    :windows: !ruby/object:Vagrant::Registry
+      items:
+        :docker_daemon_running: !ruby/object:Proc {}
+        :chef_install: !ruby/object:Proc {}
+        :chef_installed: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :halt: !ruby/object:Proc {}
+        :create_tmp_path: !ruby/object:Proc {}
+        :decompress_zip: !ruby/object:Proc {}
+        :mount_virtualbox_shared_folder: !ruby/object:Proc {}
+        :mount_vmware_shared_folder: !ruby/object:Proc {}
+        :mount_parallels_shared_folder: !ruby/object:Proc {}
+        :wait_for_reboot: !ruby/object:Proc {}
+        :reboot: !ruby/object:Proc {}
+        :choose_addressable_ip_addr: !ruby/object:Proc {}
+        :mount_smb_shared_folder: !ruby/object:Proc {}
+        :rsync_scrub_guestpath: !ruby/object:Proc {}
+        :rsync_pre: !ruby/object:Proc {}
+        :insert_public_key: !ruby/object:Proc {}
+        :remove_public_key: !ruby/object:Proc {}
+      results_cache: {}
+    :freebsd: !ruby/object:Vagrant::Registry
+      items:
+        :chef_install: !ruby/object:Proc {}
+        :chef_installed: !ruby/object:Proc {}
+        :ansible_installed: !ruby/object:Proc {}
+        :ansible_install: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :rsync_install: !ruby/object:Proc {}
+        :rsync_installed: !ruby/object:Proc {}
+        :rsync_command: !ruby/object:Proc {}
+        :rsync_post: !ruby/object:Proc {}
+        :rsync_pre: !ruby/object:Proc {}
+        :shell_expand_guest_path: !ruby/object:Proc {}
+        :mount_virtualbox_shared_folder: !ruby/object:Proc {}
+        :unmount_virtualbox_shared_folder: !ruby/object:Proc {}
+      results_cache: {}
+    :omnios: !ruby/object:Vagrant::Registry
+      items:
+        :chef_install: !ruby/object:Proc {}
+        :chef_installed: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :mount_nfs_folder: !ruby/object:Proc {}
+        :rsync_install: !ruby/object:Proc {}
+      results_cache: {}
+    :suse: !ruby/object:Vagrant::Registry
+      items:
+        :chef_install: !ruby/object:Proc {}
+        :ansible_install: !ruby/object:Proc {}
+        :cfengine_install: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :halt: !ruby/object:Proc {}
+        :network_scripts_dir: !ruby/object:Proc {}
+        :nfs_client_install: !ruby/object:Proc {}
+        :rsync_install: !ruby/object:Proc {}
+        :rsync_installed: !ruby/object:Proc {}
+      results_cache: {}
+    :arch: !ruby/object:Vagrant::Registry
+      items:
+        :ansible_install: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :nfs_client_install: !ruby/object:Proc {}
+        :nfs_client_installed: !ruby/object:Proc {}
+        :nfs_pre: !ruby/object:Proc {}
+        :rsync_install: !ruby/object:Proc {}
+        :smb_install: !ruby/object:Proc {}
+      results_cache: {}
+    :ubuntu: !ruby/object:Vagrant::Registry
+      items:
+        :ansible_install: !ruby/object:Proc {}
+      results_cache: {}
+    :solaris11: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+      results_cache: {}
+    :pld: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :network_scripts_dir: !ruby/object:Proc {}
+        :flavor: !ruby/object:Proc {}
+      results_cache: {}
+    :amazon: !ruby/object:Vagrant::Registry
+      items:
+        :flavor: !ruby/object:Proc {}
+      results_cache: {}
+    :slackware: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+      results_cache: {}
+    :esxi: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :mount_nfs_folder: !ruby/object:Proc {}
+        :halt: !ruby/object:Proc {}
+        :remove_public_key: !ruby/object:Proc {}
+        :insert_public_key: !ruby/object:Proc {}
+      results_cache: {}
+    :netbsd: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :rsync_install: !ruby/object:Proc {}
+        :rsync_installed: !ruby/object:Proc {}
+        :rsync_command: !ruby/object:Proc {}
+        :rsync_post: !ruby/object:Proc {}
+        :rsync_pre: !ruby/object:Proc {}
+        :shell_expand_guest_path: !ruby/object:Proc {}
+      results_cache: {}
+    :bsd: !ruby/object:Vagrant::Registry
+      items:
+        :create_tmp_path: !ruby/object:Proc {}
+        :decompress_tgz: !ruby/object:Proc {}
+        :decompress_zip: !ruby/object:Proc {}
+        :halt: !ruby/object:Proc {}
+        :insert_public_key: !ruby/object:Proc {}
+        :mount_nfs_folder: !ruby/object:Proc {}
+        :mount_virtualbox_shared_folder: !ruby/object:Proc {}
+        :remove_public_key: !ruby/object:Proc {}
+      results_cache: {}
+    :haiku: !ruby/object:Vagrant::Registry
+      items:
+        :halt: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :insert_public_key: !ruby/object:Proc {}
+        :remove_public_key: !ruby/object:Proc {}
+      results_cache: {}
+    :tinycore: !ruby/object:Vagrant::Registry
+      items:
+        :configure_networks: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :halt: !ruby/object:Proc {}
+        :rsync_install: !ruby/object:Proc {}
+        :mount_nfs_folder: !ruby/object:Proc {}
+      results_cache: {}
+    :atomic: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :docker_daemon_running: !ruby/object:Proc {}
+      results_cache: {}
+    :smartos: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :halt: !ruby/object:Proc {}
+        :insert_public_key: !ruby/object:Proc {}
+        :mount_nfs_folder: !ruby/object:Proc {}
+        :remove_public_key: !ruby/object:Proc {}
+        :rsync_installed: !ruby/object:Proc {}
+        :rsync_command: !ruby/object:Proc {}
+        :rsync_post: !ruby/object:Proc {}
+        :rsync_pre: !ruby/object:Proc {}
+      results_cache: {}
+    :openbsd: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :halt: !ruby/object:Proc {}
+        :rsync_install: !ruby/object:Proc {}
+        :rsync_installed: !ruby/object:Proc {}
+        :rsync_command: !ruby/object:Proc {}
+        :rsync_post: !ruby/object:Proc {}
+        :rsync_pre: !ruby/object:Proc {}
+        :shell_expand_guest_path: !ruby/object:Proc {}
+      results_cache: {}
+    :nixos: !ruby/object:Vagrant::Registry
+      items:
+        :configure_networks: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :nfs_client_installed: !ruby/object:Proc {}
+      results_cache: {}
+    :photon: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :docker_daemon_running: !ruby/object:Proc {}
+      results_cache: {}
+    :darwin: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :choose_addressable_ip_addr: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :halt: !ruby/object:Proc {}
+        :mount_smb_shared_folder: !ruby/object:Proc {}
+        :mount_vmware_shared_folder: !ruby/object:Proc {}
+        :rsync_installed: !ruby/object:Proc {}
+        :rsync_command: !ruby/object:Proc {}
+        :rsync_post: !ruby/object:Proc {}
+        :rsync_pre: !ruby/object:Proc {}
+        :shell_expand_guest_path: !ruby/object:Proc {}
+        :verify_vmware_hgfs: !ruby/object:Proc {}
+      results_cache: {}
+    :funtoo: !ruby/object:Vagrant::Registry
+      items:
+        :configure_networks: !ruby/object:Proc {}
+      results_cache: {}
+    :solaris: !ruby/object:Vagrant::Registry
+      items:
+        :create_tmp_path: !ruby/object:Proc {}
+        :decompress_tgz: !ruby/object:Proc {}
+        :decompress_zip: !ruby/object:Proc {}
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :insert_public_key: !ruby/object:Proc {}
+        :halt: !ruby/object:Proc {}
+        :mount_virtualbox_shared_folder: !ruby/object:Proc {}
+        :remove_public_key: !ruby/object:Proc {}
+        :rsync_installed: !ruby/object:Proc {}
+        :rsync_command: !ruby/object:Proc {}
+        :rsync_post: !ruby/object:Proc {}
+        :rsync_pre: !ruby/object:Proc {}
+      results_cache: {}
+    :gentoo: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+      results_cache: {}
+    :coreos: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :docker_daemon_running: !ruby/object:Proc {}
+      results_cache: {}
+    :alt: !ruby/object:Vagrant::Registry
+      items:
+        :change_host_name: !ruby/object:Proc {}
+        :configure_networks: !ruby/object:Proc {}
+        :flavor: !ruby/object:Proc {}
+        :network_scripts_dir: !ruby/object:Proc {}
+        :rsync_install: !ruby/object:Proc {}
+      results_cache: {}
+  guests: !ruby/object:Vagrant::Registry
+    items:
+      :solaris11: !ruby/object:Proc {}
+      :dragonflybsd: !ruby/object:Proc {}
+      :pld: !ruby/object:Proc {}
+      :amazon: !ruby/object:Proc {}
+      :mint: !ruby/object:Proc {}
+      :debian: !ruby/object:Proc {}
+      :slackware: !ruby/object:Proc {}
+      :esxi: !ruby/object:Proc {}
+      :netbsd: !ruby/object:Proc {}
+      :omnios: !ruby/object:Proc {}
+      :bsd: !ruby/object:Proc {}
+      :haiku: !ruby/object:Proc {}
+      :fedora: !ruby/object:Proc {}
+      :tinycore: !ruby/object:Proc {}
+      :atomic: !ruby/object:Proc {}
+      :freebsd: !ruby/object:Proc {}
+      :trisquel: !ruby/object:Proc {}
+      :smartos: !ruby/object:Proc {}
+      :kali: !ruby/object:Proc {}
+      :linux: !ruby/object:Proc {}
+      :arch: !ruby/object:Proc {}
+      :openbsd: !ruby/object:Proc {}
+      :nixos: !ruby/object:Proc {}
+      :photon: !ruby/object:Proc {}
+      :darwin: !ruby/object:Proc {}
+      :funtoo: !ruby/object:Proc {}
+      :windows: !ruby/object:Proc {}
+      :redhat: !ruby/object:Proc {}
+      :solaris: !ruby/object:Proc {}
+      :elementary: !ruby/object:Proc {}
+      :gentoo: !ruby/object:Proc {}
+      :suse: !ruby/object:Proc {}
+      :coreos: !ruby/object:Proc {}
+      :ubuntu: !ruby/object:Proc {}
+      :alt: !ruby/object:Proc {}
+    results_cache:
+      :solaris11:
+      - !ruby/class 'VagrantPlugins::GuestSolaris11::Guest'
+      - :solaris
+      :solaris:
+      - !ruby/class 'VagrantPlugins::GuestSolaris::Guest'
+      - 
+      :dragonflybsd:
+      - !ruby/class 'VagrantPlugins::GuestDragonFlyBSD::Guest'
+      - :freebsd
+      :freebsd:
+      - !ruby/class 'VagrantPlugins::GuestFreeBSD::Guest'
+      - :bsd
+      :bsd:
+      - !ruby/class 'VagrantPlugins::GuestBSD::Guest'
+      - 
+      :pld:
+      - !ruby/class 'VagrantPlugins::GuestPld::Guest'
+      - :redhat
+      :redhat:
+      - !ruby/class 'VagrantPlugins::GuestRedHat::Guest'
+      - :linux
+      :linux:
+      - !ruby/class 'VagrantPlugins::GuestLinux::Guest'
+      - 
+      :amazon:
+      - !ruby/class 'VagrantPlugins::GuestAmazon::Guest'
+      - :redhat
+      :mint:
+      - !ruby/class 'VagrantPlugins::GuestMint::Guest'
+      - :ubuntu
+      :ubuntu:
+      - !ruby/class 'VagrantPlugins::GuestUbuntu::Guest'
+      - :debian
+      :debian:
+      - !ruby/class 'VagrantPlugins::GuestDebian::Guest'
+      - :linux
+      :slackware:
+      - !ruby/class 'VagrantPlugins::GuestSlackware::Guest'
+      - :linux
+      :esxi:
+      - !ruby/class 'VagrantPlugins::GuestEsxi::Guest'
+      - 
+      :netbsd:
+      - !ruby/class 'VagrantPlugins::GuestNetBSD::Guest'
+      - :bsd
+      :omnios:
+      - !ruby/class 'VagrantPlugins::GuestOmniOS::Guest'
+      - :solaris
+      :haiku:
+      - !ruby/class 'VagrantPlugins::GuestHaiku::Guest'
+      - 
+      :fedora:
+      - !ruby/class 'VagrantPlugins::GuestFedora::Guest'
+      - :redhat
+      :tinycore:
+      - !ruby/class 'VagrantPlugins::GuestTinyCore::Guest'
+      - :linux
+      :atomic:
+      - !ruby/class 'VagrantPlugins::GuestAtomic::Guest'
+      - :fedora
+      :trisquel:
+      - !ruby/class 'VagrantPlugins::GuestTrisquel::Guest'
+      - :ubuntu
+      :smartos:
+      - !ruby/class 'VagrantPlugins::GuestSmartos::Guest'
+      - :solaris
+      :kali:
+      - !ruby/class 'VagrantPlugins::GuestKali::Guest'
+      - :debian
+      :arch:
+      - !ruby/class 'VagrantPlugins::GuestArch::Guest'
+      - :linux
+      :openbsd:
+      - !ruby/class 'VagrantPlugins::GuestOpenBSD::Guest'
+      - :bsd
+      :nixos:
+      - !ruby/class 'VagrantPlugins::GuestNixos::Guest'
+      - :linux
+      :photon:
+      - !ruby/class 'VagrantPlugins::GuestPhoton::Guest'
+      - :linux
+      :darwin:
+      - !ruby/class 'VagrantPlugins::GuestDarwin::Guest'
+      - :bsd
+      :funtoo:
+      - !ruby/class 'VagrantPlugins::GuestFuntoo::Guest'
+      - :gentoo
+      :gentoo:
+      - !ruby/class 'VagrantPlugins::GuestGentoo::Guest'
+      - :linux
+      :windows:
+      - !ruby/class 'VagrantPlugins::GuestWindows::Guest'
+      - 
+      :elementary:
+      - !ruby/class 'VagrantPlugins::GuestElementary::Guest'
+      - :ubuntu
+      :suse:
+      - !ruby/class 'VagrantPlugins::GuestSUSE::Guest'
+      - :linux
+      :coreos:
+      - !ruby/class 'VagrantPlugins::GuestCoreOS::Guest'
+      - :linux
+      :alt:
+      - !ruby/class 'VagrantPlugins::GuestALT::Guest'
+      - :redhat
+  machine: *57
+  cap_logger: !ruby/object:Log4r::Logger
+    fullname: vagrant::capability_host::vagrant::guest
+    outputters: []
+    additive: true
+    name: guest
+    path: vagrant::capability_host::vagrant
+    parent: *1
+    level: 0
+    trace: false
+  cap_host_chain:
+  - - :ubuntu
+    - !ruby/object:VagrantPlugins::GuestUbuntu::Guest {}
+  - - :debian
+    - !ruby/object:VagrantPlugins::GuestDebian::Guest {}
+  - - :linux
+    - !ruby/object:VagrantPlugins::GuestLinux::Guest {}
+  cap_args:
+  - *57
+  cap_caps: *61
+name: :dbserver
+provider_config: *62
+provider_name: :digital_ocean
+provider_options:
+  :parallel: true
+  :defaultable: false
+  :priority: 5
+ui: &68 !ruby/object:Vagrant::UI::Prefixed
+  logger: !ruby/object:Log4r::Logger
+    fullname: vagrant::ui::interface
+    outputters: []
+    additive: true
+    name: interface
+    path: vagrant::ui
+    parent: *1
+    level: 0
+    trace: false
+  opts: {}
+  stdin: *63
+  stdout: *64
+  stderr: *65
+  prefix: :dbserver
+  ui: *66
+ui_mutex: !ruby/object:Thread::Mutex {}
+state_mutex: !ruby/object:Thread::Mutex {}
+triggers: !ruby/object:Vagrant::Plugin::V2::Trigger
+  env: *58
+  config: *67
+  machine: *57
+  ui: *68
+  logger: !ruby/object:Log4r::Logger
+    fullname: vagrant::trigger::vagrant::plugin::v2::trigger
+    outputters: []
+    additive: true
+    name: trigger
+    path: vagrant::trigger::vagrant::plugin::v2
+    parent: *1
+    level: 0
+    trace: false
+  _triggers_enabled: false
+id: '179917826'
+index_uuid_file: !ruby/object:Pathname
+  path: "/Users/ropf/Documents/workspace/Python/flask-minitwit-mongodb/.vagrant/machines/dbserver/digital_ocean/index_uuid"
+provider: !ruby/object:VagrantPlugins::DigitalOcean::Provider
+  machine: *57
+  cap_logger: !ruby/object:Log4r::Logger
+    fullname: vagrant::capability_host::vagrantplugins::digitalocean::provider
+    outputters: []
+    additive: true
+    name: provider
+    path: vagrant::capability_host::vagrantplugins::digitalocean
+    parent: *1
+    level: 0
+    trace: false
+  cap_host_chain:
+  - - :digital_ocean
+    - !ruby/object {}
+  cap_args:
+  - *57
+  cap_caps:
+    :docker: !ruby/object:Vagrant::Registry
+      items:
+        :public_address: !ruby/object:Proc {}
+        :proxy_machine: !ruby/object:Proc {}
+      results_cache: {}
+    :hyperv: !ruby/object:Vagrant::Registry
+      items:
+        :public_address: !ruby/object:Proc {}
+        :snapshot_list: !ruby/object:Proc {}
+      results_cache: {}
+    :virtualbox: !ruby/object:Vagrant::Registry
+      items:
+        :forwarded_ports: !ruby/object:Proc {}
+        :nic_mac_addresses: !ruby/object:Proc {}
+        :public_address: !ruby/object:Proc {}
+        :snapshot_list: !ruby/object:Proc {}
+      results_cache: {}
+communicator: !ruby/object:VagrantPlugins::CommunicatorSSH::Communicator
+  lock: !ruby/object:Thread::Mutex {}
+  machine: *57
+  logger: !ruby/object:Log4r::Logger
+    fullname: vagrant::communication::ssh
+    outputters: []
+    additive: true
+    name: ssh
+    path: vagrant::communication
+    parent: *1
+    level: 0
+    trace: false
+  connection: &78 !ruby/object:Net::SSH::Connection::Session
+    logger: &69 !ruby/object:Logger
+      level: 0
+      progname: 
+      default_formatter: !ruby/object:Logger::Formatter
+        datetime_format: 
+      formatter: 
+      logdev: !ruby/object:Logger::LogDevice
+        shift_period_suffix: 
+        shift_size: 
+        shift_age: 
+        filename: 
+        dev: !ruby/object:StringIO {}
+        mon_owner: 
+        mon_count: 0
+        mon_mutex: !ruby/object:Thread::Mutex {}
+    transport: &73 !ruby/object:Net::SSH::Transport::Session
+      logger: *69
+      host: 142.93.99.174
+      port: '22'
+      bind_address: 
+      options: &72
+        :auth_methods:
+        - none
+        - hostbased
+        - publickey
+        :config: false
+        :forward_agent: false
+        :send_env: false
+        :keys_only: true
+        :verify_host_key: :never
+        :port: '22'
+        :timeout: 15
+        :user_known_hosts_file: []
+        :verbose: :debug
+        :encryption:
+        - aes256-ctr
+        - aes192-ctr
+        - aes128-ctr
+        - aes256-cbc
+        - aes192-cbc
+        - aes128-cbc
+        - rijndael-cbc@lysator.liu.se
+        - blowfish-ctr
+        - blowfish-cbc
+        - cast128-ctr
+        - cast128-cbc
+        - 3des-ctr
+        - 3des-cbc
+        - idea-cbc
+        - arcfour256
+        - arcfour128
+        - arcfour
+        - none
+        :logger: *69
+        :keys: *70
+        :remote_user: vagrant
+        :password_prompt: !ruby/object:Net::SSH::Prompt {}
+        :user: root
+      facility: net.ssh.transport.session[815e16dc]
+      socket: &71 !ruby/object:Socket
+        hints:
+          :authenticated: true
+        server: !ruby/object:Net::SSH::Transport::State
+          socket: *71
+          role: :server
+          blocks: 1475
+          packets: 644
+          sequence_number: 647
+          cipher: !ruby/marshalable:Net::SSH::Transport::OpenSSLAESCTR
+            :__v2__:
+            - :@was_reset
+            ? - true
+            : !ruby/object:OpenSSL::Cipher {}
+          block_size: 16
+          hmac: !ruby/object:Net::SSH::Transport::HMAC::SHA2_512
+            key: !binary |-
+              zN8+zWOxoIphCRrtsVF+weisRMCcYtIP/meMs8j2M1FK9KZpDl4CO86eVwbpGcvJj6ng4d9sT+U/APIIP1noeA==
+          compression: false
+          decompressor: 
+          compressor: 
+          next_iv: !binary |-
+            sw9/3z3w35K8va+Figr4zw==
+          rekey_limit: 
+          max_packets: 2147483648
+          max_blocks: 4294967296
+        client: !ruby/object:Net::SSH::Transport::State
+          socket: *71
+          role: :client
+          blocks: 1151
+          packets: 287
+          sequence_number: 290
+          cipher: !ruby/marshalable:Net::SSH::Transport::OpenSSLAESCTR
+            :__v2__:
+            - :@was_reset
+            ? - true
+            : !ruby/object:OpenSSL::Cipher {}
+          block_size: 16
+          hmac: !ruby/object:Net::SSH::Transport::HMAC::SHA2_512
+            key: !binary |-
+              yvJpu2nQUj80bS3a26mylpqgMz2VPzLEx1S8/U6+A1kysvUuuP6KXPjXc+CRC6qxqSe4bWII6ZwPKGS+8SO2rg==
+          compression: false
+          decompressor: 
+          compressor: 
+          next_iv: !binary |-
+            jNgIu1bngOv6K3tWz9h3PA==
+          compression_level: 
+          rekey_limit: 
+          max_packets: 2147483648
+          max_blocks: 4294967296
+        packet: 
+        input: !ruby/object:Net::SSH::Buffer
+          content: !binary |-
+            dlfh+sJCCN6MGsQKfMTcr4fJA25TVxygTu2A+3a+z/thQSExd1VoYVc9xvlwx4H3SgyWGujaDTtfcDmCf0soeAuYZSISTQePxrSx1Av3X7XT9qTsifWKWNw9bJldPo0b62gDdrjE6p/svGAe8gDNorMPf9898N+SvL2vhYoK+M9yuqdNyb7v6Gg9oq00LpFMGacsZkY7AOLaW4e5hPnRdNRXSAT7GuyY8PrP85pzXuK7w5P2qec7ywGh0dQeoF79
+          position: 192
+        input_errors: []
+        output: !ruby/object:Net::SSH::Buffer
+          content: ''
+          position: 0
+        output_errors: []
+        logger: *69
+        peer_ip: 142.93.99.174
+        facility: socket[815e1240]
+        packet_length: 12
+      queue: []
+      host_key_verifier: !ruby/object:Net::SSH::Verifiers::Never {}
+      server_version: !ruby/object:Net::SSH::Transport::ServerVersion
+        header: ''
+        version: SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3
+        logger: *69
+        facility: net.ssh.transport.server_version[815e0994]
+      host_as_string: "[142.93.99.174]:22"
+      host_keys: !ruby/object:Net::SSH::HostKeys
+        host_keys: []
+        host: "[142.93.99.174]:22"
+        known_hosts: !ruby/class 'Net::SSH::KnownHosts'
+        options: *72
+      algorithms: !ruby/object:Net::SSH::Transport::Algorithms
+        session: *73
+        logger: *69
+        options: *72
+        algorithms:
+          :host_key:
+          - ssh-ed25519-cert-v01@openssh.com
+          - ssh-ed25519
+          - ecdsa-sha2-nistp521-cert-v01@openssh.com
+          - ecdsa-sha2-nistp384-cert-v01@openssh.com
+          - ecdsa-sha2-nistp256-cert-v01@openssh.com
+          - ecdsa-sha2-nistp521
+          - ecdsa-sha2-nistp384
+          - ecdsa-sha2-nistp256
+          - ssh-rsa-cert-v01@openssh.com
+          - ssh-rsa-cert-v00@openssh.com
+          - ssh-rsa
+          - ssh-dss
+          :kex:
+          - ecdh-sha2-nistp521
+          - ecdh-sha2-nistp384
+          - ecdh-sha2-nistp256
+          - diffie-hellman-group-exchange-sha256
+          - diffie-hellman-group-exchange-sha1
+          - diffie-hellman-group14-sha1
+          - diffie-hellman-group1-sha1
+          :encryption: &74
+          - aes256-ctr
+          - aes192-ctr
+          - aes128-ctr
+          - aes256-cbc
+          - aes192-cbc
+          - aes128-cbc
+          - rijndael-cbc@lysator.liu.se
+          - blowfish-ctr
+          - blowfish-cbc
+          - cast128-ctr
+          - cast128-cbc
+          - 3des-ctr
+          - 3des-cbc
+          - idea-cbc
+          - arcfour256
+          - arcfour128
+          - arcfour
+          - none
+          :hmac: &75
+          - hmac-sha2-512
+          - hmac-sha2-256
+          - hmac-sha2-512-96
+          - hmac-sha2-256-96
+          - hmac-sha1
+          - hmac-sha1-96
+          - hmac-ripemd160
+          - hmac-ripemd160@openssh.com
+          - hmac-md5
+          - hmac-md5-96
+          - none
+          :compression: &76
+          - none
+          - zlib@openssh.com
+          - zlib
+          :language: &77 []
+          :encryption_server: *74
+          :encryption_client: *74
+          :hmac_server: *75
+          :hmac_client: *75
+          :compression_server: *76
+          :compression_client: *76
+          :language_server: *77
+          :language_client: *77
+        initialized: true
+        pending: false
+        server_packet: !binary |-
+          FPvDeTlfJh2ZC+lROl2535QAAAECY3VydmUyNTUxOS1zaGEyNTYsY3VydmUyNTUxOS1zaGEyNTZAbGlic3NoLm9yZyxlY2RoLXNoYTItbmlzdHAyNTYsZWNkaC1zaGEyLW5pc3RwMzg0LGVjZGgtc2hhMi1uaXN0cDUyMSxkaWZmaWUtaGVsbG1hbi1ncm91cC1leGNoYW5nZS1zaGEyNTYsZGlmZmllLWhlbGxtYW4tZ3JvdXAxNi1zaGE1MTIsZGlmZmllLWhlbGxtYW4tZ3JvdXAxOC1zaGE1MTIsZGlmZmllLWhlbGxtYW4tZ3JvdXAxNC1zaGEyNTYsZGlmZmllLWhlbGxtYW4tZ3JvdXAxNC1zaGExAAAAQXNzaC1yc2EscnNhLXNoYTItNTEyLHJzYS1zaGEyLTI1NixlY2RzYS1zaGEyLW5pc3RwMjU2LHNzaC1lZDI1NTE5AAAAbGNoYWNoYTIwLXBvbHkxMzA1QG9wZW5zc2guY29tLGFlczEyOC1jdHIsYWVzMTkyLWN0cixhZXMyNTYtY3RyLGFlczEyOC1nY21Ab3BlbnNzaC5jb20sYWVzMjU2LWdjbUBvcGVuc3NoLmNvbQAAAGxjaGFjaGEyMC1wb2x5MTMwNUBvcGVuc3NoLmNvbSxhZXMxMjgtY3RyLGFlczE5Mi1jdHIsYWVzMjU2LWN0cixhZXMxMjgtZ2NtQG9wZW5zc2guY29tLGFlczI1Ni1nY21Ab3BlbnNzaC5jb20AAADVdW1hYy02NC1ldG1Ab3BlbnNzaC5jb20sdW1hYy0xMjgtZXRtQG9wZW5zc2guY29tLGhtYWMtc2hhMi0yNTYtZXRtQG9wZW5zc2guY29tLGhtYWMtc2hhMi01MTItZXRtQG9wZW5zc2guY29tLGhtYWMtc2hhMS1ldG1Ab3BlbnNzaC5jb20sdW1hYy02NEBvcGVuc3NoLmNvbSx1bWFjLTEyOEBvcGVuc3NoLmNvbSxobWFjLXNoYTItMjU2LGhtYWMtc2hhMi01MTIsaG1hYy1zaGExAAAA1XVtYWMtNjQtZXRtQG9wZW5zc2guY29tLHVtYWMtMTI4LWV0bUBvcGVuc3NoLmNvbSxobWFjLXNoYTItMjU2LWV0bUBvcGVuc3NoLmNvbSxobWFjLXNoYTItNTEyLWV0bUBvcGVuc3NoLmNvbSxobWFjLXNoYTEtZXRtQG9wZW5zc2guY29tLHVtYWMtNjRAb3BlbnNzaC5jb20sdW1hYy0xMjhAb3BlbnNzaC5jb20saG1hYy1zaGEyLTI1NixobWFjLXNoYTItNTEyLGhtYWMtc2hhMQAAABVub25lLHpsaWJAb3BlbnNzaC5jb20AAAAVbm9uZSx6bGliQG9wZW5zc2guY29tAAAAAAAAAAAAAAAAAA==
+        client_packet: !binary |-
+          FEkLra6HrE4Ru/t0u/EoDc0AAAC3ZWNkaC1zaGEyLW5pc3RwNTIxLGVjZGgtc2hhMi1uaXN0cDM4NCxlY2RoLXNoYTItbmlzdHAyNTYsZGlmZmllLWhlbGxtYW4tZ3JvdXAtZXhjaGFuZ2Utc2hhMjU2LGRpZmZpZS1oZWxsbWFuLWdyb3VwLWV4Y2hhbmdlLXNoYTEsZGlmZmllLWhlbGxtYW4tZ3JvdXAxNC1zaGExLGRpZmZpZS1oZWxsbWFuLWdyb3VwMS1zaGExAAABLXNzaC1lZDI1NTE5LWNlcnQtdjAxQG9wZW5zc2guY29tLHNzaC1lZDI1NTE5LGVjZHNhLXNoYTItbmlzdHA1MjEtY2VydC12MDFAb3BlbnNzaC5jb20sZWNkc2Etc2hhMi1uaXN0cDM4NC1jZXJ0LXYwMUBvcGVuc3NoLmNvbSxlY2RzYS1zaGEyLW5pc3RwMjU2LWNlcnQtdjAxQG9wZW5zc2guY29tLGVjZHNhLXNoYTItbmlzdHA1MjEsZWNkc2Etc2hhMi1uaXN0cDM4NCxlY2RzYS1zaGEyLW5pc3RwMjU2LHNzaC1yc2EtY2VydC12MDFAb3BlbnNzaC5jb20sc3NoLXJzYS1jZXJ0LXYwMEBvcGVuc3NoLmNvbSxzc2gtcnNhLHNzaC1kc3MAAADNYWVzMjU2LWN0cixhZXMxOTItY3RyLGFlczEyOC1jdHIsYWVzMjU2LWNiYyxhZXMxOTItY2JjLGFlczEyOC1jYmMscmlqbmRhZWwtY2JjQGx5c2F0b3IubGl1LnNlLGJsb3dmaXNoLWN0cixibG93ZmlzaC1jYmMsY2FzdDEyOC1jdHIsY2FzdDEyOC1jYmMsM2Rlcy1jdHIsM2Rlcy1jYmMsaWRlYS1jYmMsYXJjZm91cjI1NixhcmNmb3VyMTI4LGFyY2ZvdXIsbm9uZQAAAM1hZXMyNTYtY3RyLGFlczE5Mi1jdHIsYWVzMTI4LWN0cixhZXMyNTYtY2JjLGFlczE5Mi1jYmMsYWVzMTI4LWNiYyxyaWpuZGFlbC1jYmNAbHlzYXRvci5saXUuc2UsYmxvd2Zpc2gtY3RyLGJsb3dmaXNoLWNiYyxjYXN0MTI4LWN0cixjYXN0MTI4LWNiYywzZGVzLWN0ciwzZGVzLWNiYyxpZGVhLWNiYyxhcmNmb3VyMjU2LGFyY2ZvdXIxMjgsYXJjZm91cixub25lAAAAmGhtYWMtc2hhMi01MTIsaG1hYy1zaGEyLTI1NixobWFjLXNoYTItNTEyLTk2LGhtYWMtc2hhMi0yNTYtOTYsaG1hYy1zaGExLGhtYWMtc2hhMS05NixobWFjLXJpcGVtZDE2MCxobWFjLXJpcGVtZDE2MEBvcGVuc3NoLmNvbSxobWFjLW1kNSxobWFjLW1kNS05Nixub25lAAAAmGhtYWMtc2hhMi01MTIsaG1hYy1zaGEyLTI1NixobWFjLXNoYTItNTEyLTk2LGhtYWMtc2hhMi0yNTYtOTYsaG1hYy1zaGExLGhtYWMtc2hhMS05NixobWFjLXJpcGVtZDE2MCxobWFjLXJpcGVtZDE2MEBvcGVuc3NoLmNvbSxobWFjLW1kNSxobWFjLW1kNS05Nixub25lAAAAGm5vbmUsemxpYkBvcGVuc3NoLmNvbSx6bGliAAAAGm5vbmUsemxpYkBvcGVuc3NoLmNvbSx6bGliAAAAAAAAAAAAAAAAAA==
+        facility: net.ssh.transport.algorithms[815dcb00]
+        server_data:
+          :raw: !binary |-
+            FPvDeTlfJh2ZC+lROl2535QAAAECY3VydmUyNTUxOS1zaGEyNTYsY3VydmUyNTUxOS1zaGEyNTZAbGlic3NoLm9yZyxlY2RoLXNoYTItbmlzdHAyNTYsZWNkaC1zaGEyLW5pc3RwMzg0LGVjZGgtc2hhMi1uaXN0cDUyMSxkaWZmaWUtaGVsbG1hbi1ncm91cC1leGNoYW5nZS1zaGEyNTYsZGlmZmllLWhlbGxtYW4tZ3JvdXAxNi1zaGE1MTIsZGlmZmllLWhlbGxtYW4tZ3JvdXAxOC1zaGE1MTIsZGlmZmllLWhlbGxtYW4tZ3JvdXAxNC1zaGEyNTYsZGlmZmllLWhlbGxtYW4tZ3JvdXAxNC1zaGExAAAAQXNzaC1yc2EscnNhLXNoYTItNTEyLHJzYS1zaGEyLTI1NixlY2RzYS1zaGEyLW5pc3RwMjU2LHNzaC1lZDI1NTE5AAAAbGNoYWNoYTIwLXBvbHkxMzA1QG9wZW5zc2guY29tLGFlczEyOC1jdHIsYWVzMTkyLWN0cixhZXMyNTYtY3RyLGFlczEyOC1nY21Ab3BlbnNzaC5jb20sYWVzMjU2LWdjbUBvcGVuc3NoLmNvbQAAAGxjaGFjaGEyMC1wb2x5MTMwNUBvcGVuc3NoLmNvbSxhZXMxMjgtY3RyLGFlczE5Mi1jdHIsYWVzMjU2LWN0cixhZXMxMjgtZ2NtQG9wZW5zc2guY29tLGFlczI1Ni1nY21Ab3BlbnNzaC5jb20AAADVdW1hYy02NC1ldG1Ab3BlbnNzaC5jb20sdW1hYy0xMjgtZXRtQG9wZW5zc2guY29tLGhtYWMtc2hhMi0yNTYtZXRtQG9wZW5zc2guY29tLGhtYWMtc2hhMi01MTItZXRtQG9wZW5zc2guY29tLGhtYWMtc2hhMS1ldG1Ab3BlbnNzaC5jb20sdW1hYy02NEBvcGVuc3NoLmNvbSx1bWFjLTEyOEBvcGVuc3NoLmNvbSxobWFjLXNoYTItMjU2LGhtYWMtc2hhMi01MTIsaG1hYy1zaGExAAAA1XVtYWMtNjQtZXRtQG9wZW5zc2guY29tLHVtYWMtMTI4LWV0bUBvcGVuc3NoLmNvbSxobWFjLXNoYTItMjU2LWV0bUBvcGVuc3NoLmNvbSxobWFjLXNoYTItNTEyLWV0bUBvcGVuc3NoLmNvbSxobWFjLXNoYTEtZXRtQG9wZW5zc2guY29tLHVtYWMtNjRAb3BlbnNzaC5jb20sdW1hYy0xMjhAb3BlbnNzaC5jb20saG1hYy1zaGEyLTI1NixobWFjLXNoYTItNTEyLGhtYWMtc2hhMQAAABVub25lLHpsaWJAb3BlbnNzaC5jb20AAAAVbm9uZSx6bGliQG9wZW5zc2guY29tAAAAAAAAAAAAAAAAAA==
+          :kex:
+          - curve25519-sha256
+          - curve25519-sha256@libssh.org
+          - ecdh-sha2-nistp256
+          - ecdh-sha2-nistp384
+          - ecdh-sha2-nistp521
+          - diffie-hellman-group-exchange-sha256
+          - diffie-hellman-group16-sha512
+          - diffie-hellman-group18-sha512
+          - diffie-hellman-group14-sha256
+          - diffie-hellman-group14-sha1
+          :host_key:
+          - ssh-rsa
+          - rsa-sha2-512
+          - rsa-sha2-256
+          - ecdsa-sha2-nistp256
+          - ssh-ed25519
+          :encryption_client:
+          - chacha20-poly1305@openssh.com
+          - aes128-ctr
+          - aes192-ctr
+          - aes256-ctr
+          - aes128-gcm@openssh.com
+          - aes256-gcm@openssh.com
+          :encryption_server:
+          - chacha20-poly1305@openssh.com
+          - aes128-ctr
+          - aes192-ctr
+          - aes256-ctr
+          - aes128-gcm@openssh.com
+          - aes256-gcm@openssh.com
+          :hmac_client:
+          - umac-64-etm@openssh.com
+          - umac-128-etm@openssh.com
+          - hmac-sha2-256-etm@openssh.com
+          - hmac-sha2-512-etm@openssh.com
+          - hmac-sha1-etm@openssh.com
+          - umac-64@openssh.com
+          - umac-128@openssh.com
+          - hmac-sha2-256
+          - hmac-sha2-512
+          - hmac-sha1
+          :hmac_server:
+          - umac-64-etm@openssh.com
+          - umac-128-etm@openssh.com
+          - hmac-sha2-256-etm@openssh.com
+          - hmac-sha2-512-etm@openssh.com
+          - hmac-sha1-etm@openssh.com
+          - umac-64@openssh.com
+          - umac-128@openssh.com
+          - hmac-sha2-256
+          - hmac-sha2-512
+          - hmac-sha1
+          :compression_client:
+          - none
+          - zlib@openssh.com
+          :compression_server:
+          - none
+          - zlib@openssh.com
+          :language_client: []
+          :language_server: []
+        kex: ecdh-sha2-nistp521
+        host_key: ssh-ed25519
+        encryption_client: aes256-ctr
+        encryption_server: aes256-ctr
+        hmac_client: hmac-sha2-512
+        hmac_server: hmac-sha2-512
+        compression_client: none
+        compression_server: none
+        language_client: ''
+        language_server: ''
+        session_id: !binary |-
+          QXDQe5ZAAb7z7xYENpNte1xabyy8x/ZnnwXDaVu56NTUxf+XGDXqVYObmfVN+i/rT8NS8eWhF+yHB/jk5FD2RA==
+    options: *72
+    channel_id_counter: 72
+    channels: {}
+    listeners:
+      *71: 
+    pending_requests: []
+    channel_open_handlers: {}
+    on_global_request: {}
+    properties: {}
+    max_pkt_size: 32768
+    max_win_size: 131072
+    keepalive: !ruby/object:Net::SSH::Connection::Keepalive
+      last_keepalive_sent_at: 
+      unresponded_keepalive_count: 0
+      session: *78
+      logger: *69
+    event_loop: !ruby/object:Net::SSH::Connection::SingleSessionEventLoop
+      logger: 
+      sessions:
+      - *78
+    facility: net.ssh.connection.session[80f996a8]
+  inserted_key: true
+  connection_ssh_info:
+    :host: 142.93.99.174
+    :port: '22'
+    :username: root
+    :private_key_path: *70
+    :keys_only: true
+    :verify_host_key: :never
+    :remote_user: vagrant
+    :compression: true
+    :dsa_authentication: true
+    :extra_args: 
+    :config: 
+    :forward_agent: false
+    :forward_x11: false
+    :forward_env: false
