@@ -1,5 +1,15 @@
 # An example using Docker
 
+To run this scenario work from this repositories `Containerize` branch.
+
+```bash
+$ git clone https://github.com/HelgeCPH/flask-minitwit-mongodb.git
+$ cd flask-minitwit-mongodb
+$ git checkout Containerize  # Automatically tracks the remote branch
+```
+
+
+
 ## Building the DB Server
 The following is written from my perspective, i.e. user `youruser`.
 
