@@ -1,0 +1,20 @@
+version: '3'
+services:
+  dbserver:
+    image: helgecph/dbserver
+    ports:
+      - "27017:27017"
+    networks:
+      - outside
+
+  webserver:
+    image: helgecph/webserver
+    ports:
+      - "5000:5000"
+    networks:
+        - outside
+
+networks:
+  outside:
+    external:
+      name: minitwit-network
