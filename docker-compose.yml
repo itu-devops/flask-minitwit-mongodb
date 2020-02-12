@@ -1,14 +1,14 @@
 version: '3'
 services:
   dbserver:
-    image: helgecph/dbserver
+    image: youruser/dbserver
     ports:
       - "27017:27017"
     networks:
       - outside
 
   webserver:
-    image: helgecph/webserver
+    image: youruser/webserver
     ports:
       - "5000:5000"
     networks:
