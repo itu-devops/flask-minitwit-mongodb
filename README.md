@@ -29,7 +29,7 @@ Now, check that both images are locally available.
 $ docker images
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
 youruser/dbserver    latest              cac4408f5795        11 seconds ago      387MB
-youruser/webserver   latest              e4ca7d384b45        7 minutes ago       948MB
+youruser/webserver   latest              537f5173f33e         2 minutes ago      64.3MB
 ```
 
 ## Starting the Application Manually
@@ -134,10 +134,9 @@ $ docker-compose up
 
 ```bash
 $ docker ps -a
-CONTAINER ID        IMAGE                COMMAND                  CREATED             STATUS                       PORTS               NAMES
-01a0a11d00d3        appropriate/curl     "sh -c 'sleep 5 &&..."   9 minutes ago       Exited (0) 9 minutes ago                         03containersandvms_clidownload_1
-ef4617bdc0d8        youruser/webserver   "/bin/sh -c ./telb..."   9 minutes ago       Exited (137) 6 seconds ago                       03containersandvms_webserver_1
-113c782030c4        youruser/dbserver    "docker-entrypoint..."   9 minutes ago       Exited (0) 5 seconds ago                         03containersandvms_dbserver_1
+CONTAINER ID   IMAGE                COMMAND                  CREATED              STATUS                        PORTS     NAMES
+355fb74a095d   youruser/dbserver    "docker-entrypoint.s…"   About a minute ago   Exited (137) 15 seconds ago             flask-minitwit-mongodb_dbserver_1
+8e37a4ead1d1   youruser/webserver   "python ./minitwit.py"   About a minute ago   Exited (0) 25 seconds ago               flask-minitwit-mongodb_webserver_1
 ```
 
 ```bash
