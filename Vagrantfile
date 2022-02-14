@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
   config.vm.define "dbserver", primary: true do |server|
-    server.vm.network "private_network", ip: "192.168.20.2"
+    server.vm.network "private_network", ip: "192.168.56.2"
     # config.vm.network "forwarded_port", guest: 27017, host: 37017
     # config.vm.network "forwarded_port", guest: 28017, host: 38017
     server.vm.provider "virtualbox" do |vb|
@@ -33,14 +33,14 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "webserver", primary: true do |server|
-    server.vm.network "private_network", ip: "192.168.20.3"
+    server.vm.network "private_network", ip: "192.168.56.3"
     # server.vm.network "forwarded_port", guest: 5000, host: 5000
     server.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
     end
     server.vm.hostname = "webserver"
     server.vm.provision "shell", privileged: false, inline: <<-SHELL
-        export DB_IP="192.168.20.2"
+        export DB_IP="192.168.56.2"
 
         echo "Installing Anaconda..."
         sudo wget https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh -O $HOME/Anaconda3-2019.07-Linux-x86_64.sh
@@ -61,7 +61,7 @@ Vagrant.configure("2") do |config|
         echo "=                            DONE                               ="
         echo "================================================================="
         echo "Navigate in your browser to:"
-        echo "http://192.168.20.3:5000"
+        echo "http://192.168.56.3:5000"
     SHELL
   end
 
