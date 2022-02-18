@@ -41,27 +41,23 @@ Vagrant.configure("2") do |config|
     server.vm.hostname = "webserver"
     server.vm.provision "shell", privileged: false, inline: <<-SHELL
         export DB_IP="192.168.56.2"
-
-        echo "Installing Anaconda..."
-        sudo wget https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh -O $HOME/Anaconda3-2019.07-Linux-x86_64.sh
-    
-        bash $HOME/Anaconda3-2019.07-Linux-x86_64.sh -b
         
-        echo ". $HOME/.bashrc" >> $HOME/.bash_profile
-        echo "export PATH=$HOME/anaconda3/bin:$PATH" >> $HOME/.bash_profile
-        export PATH="$HOME/anaconda3/bin:$PATH"
-        rm $HOME/Anaconda3-2019.07-Linux-x86_64.sh
-        source $HOME/.bash_profile
-
-        pip install Flask-PyMongo
-
+        python3 --version
         cp -r /vagrant/* $HOME
-        nohup python minitwit.py > out.log 2>&1 &
+        
+        sudo apt-get install -y python3 python3-pip
+        
+        python3 -m pip install -r requirements.txt
+        python3 -m pip install Flask-PyMongo
+        
+        nohup python3 minitwit.py > out.log 2>&1 &
+        
+        ip=$(ifconfig eth1 | awk -F ' *|:' '/inet /{print $3}')
+        
         echo "================================================================="
         echo "=                            DONE                               ="
         echo "================================================================="
-        echo "Navigate in your browser to:"
-        echo "http://192.168.56.3:5000"
+        echo "Navigate in your browser to: $ip:5000"
     SHELL
   end
 
