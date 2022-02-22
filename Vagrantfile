@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# system("sudo bash vbox-network.sh")
+
 Vagrant.configure("2") do |config|
   config.vm.box = "generic/ubuntu1804"
 
