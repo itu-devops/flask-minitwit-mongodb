@@ -1,12 +1,12 @@
 # If /etc/vbox doesn't exist create it
 if [ ! -d /etc/vbox ]; then
-    echo "Creating /etc/vbox"
+    echo "Creating directory /etc/vbox"
     mkdir /etc/vbox
 fi
 
 # if file /etc/vbox/networks.conf doesn't exist create it
 if [ ! -f /etc/vbox/networks.conf ]; then
-    echo "Creating /etc/vbox/networks.conf"
+    echo "Creating file /etc/vbox/networks.conf"
     touch /etc/vbox/networks.conf
 fi
 
