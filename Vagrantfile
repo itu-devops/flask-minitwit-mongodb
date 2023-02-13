@@ -1,11 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Since the webserver needs the IP of the DB server the two have to be started
-# in the right order and with storing the IP of the latter on the way:
-#
-# $ rm db_ip.txt | vagrant up | python store_ip.py
-
 $ip_file = "db_ip.txt"
 
 Vagrant.configure("2") do |config|
@@ -116,5 +111,4 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     sudo apt-get update
   SHELL
-
 end
