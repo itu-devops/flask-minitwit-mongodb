@@ -127,7 +127,7 @@ networks:
 
 
 ```bash
-$ docker-compose up
+$ docker compose up
 ```
 
 ### Cleaning up
@@ -140,6 +140,6 @@ CONTAINER ID   IMAGE                COMMAND                  CREATED            
 ```
 
 ```bash
-$ docker-compose rm
+$ docker compose rm
 ```
 
