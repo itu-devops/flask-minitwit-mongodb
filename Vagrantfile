@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     server.vm.provider :digital_ocean do |provider|
       provider.ssh_key_name = ENV["SSH_KEY_NAME"]
       provider.token = ENV["DIGITAL_OCEAN_TOKEN"]
-      provider.image = 'ubuntu-18-04-x64'
+      provider.image = 'ubuntu-22-04-x64'
       provider.region = 'fra1'
       provider.size = 's-1vcpu-1gb'
       provider.privatenetworking = true
@@ -31,10 +31,17 @@ Vagrant.configure("2") do |config|
 
     server.vm.provision "shell", inline: <<-SHELL
       echo "Installing MongoDB"
-      wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
-      echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+
+
+      sudo apt-get install gnupg curl
+
+      curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
+          sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg \
+          --dearmor
+      echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | \
+          sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+
       sudo apt-get update
-      # sudo apt-get install -y mongodb-org-shell mongodb-org-server mongodb-org-mongos mongodb-org
       sudo apt-get install -y mongodb-org
 
       sudo mkdir -p /data/db
@@ -50,7 +57,7 @@ Vagrant.configure("2") do |config|
     server.vm.provider :digital_ocean do |provider|
       provider.ssh_key_name = ENV["SSH_KEY_NAME"]
       provider.token = ENV["DIGITAL_OCEAN_TOKEN"]
-      provider.image = 'ubuntu-18-04-x64'
+      provider.image = 'ubuntu-22-04-x64'
       provider.region = 'fra1'
       provider.size = 's-1vcpu-1gb'
       provider.privatenetworking = true
@@ -108,6 +115,7 @@ Vagrant.configure("2") do |config|
       echo "http://${THIS_IP}:5000"
     SHELL
   end
+
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     sudo apt-get update
   SHELL
