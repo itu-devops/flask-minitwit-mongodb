@@ -3,7 +3,7 @@
 To run this scenario work from this repositories `Containerize` branch.
 
 ```bash
-$ git clone https://github.com/HelgeCPH/flask-minitwit-mongodb.git
+$ git clone https://github.com/itu-devops/flask-minitwit-mongodb.git
 $ cd flask-minitwit-mongodb
 $ git checkout Containerize  # Automatically tracks the remote branch
 ```
