@@ -95,34 +95,32 @@ $ docker rm dbserver
 
 ## Starting the Application with Docker Compose
 
-
 ```yml
-version: '3'
 services:
   dbserver:
     image: youruser/dbserver
     ports:
       - "27017:27017"
     networks:
-      - outside
+      - minitwit-network
 
   webserver:
     image: youruser/webserver
     ports:
-      - "8080:8080"
+      - "5000:5000" # Depending on the OS using port 5000 might be reserved. Change to "5002:5000" or something similar.
     networks:
-        - outside
+        - minitwit-network
 
   clidownload:
     image: appropriate/curl
     networks:
-      - outside
-    entrypoint: sh -c  "sleep 5 && curl http://webserver:8080"
+      - minitwit-network
+    entrypoint: sh -c  "sleep 5 && curl http://webserver:5000" # If above applies remember to change this as well.
 
 networks:
-  outside:
-    external:
-      name: example-network
+  minitwit-network:
+    name: "minitwit-network"
+    external: True
 ```
 
 
