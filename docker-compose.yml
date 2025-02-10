@@ -1,10 +1,11 @@
+version: '3'
 services:
   dbserver:
     image: your_id/dbserver
     ports:
       - "27017:27017"
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      test: mongosh --quiet --eval 'db.runCommand("ping").ok' localhost:27017/test
       interval: 30s
       timeout: 10s
       retries: 3
@@ -19,7 +20,7 @@ services:
     ports:
       - "5000:5000" # Depending on the OS using port 5000 might be reserved. Change to "5002:5000" or something similar.
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      test: ["CMD", "python", "-c", "import urllib.request;print(urllib.request.urlopen('http://localhost:5000/').read())"]
       interval: 30s
       timeout: 10s
       retries: 3
