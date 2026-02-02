@@ -11,7 +11,7 @@ $ git checkout Containerize  # Automatically tracks the remote branch
 
 
 ## Building the DB Server
-The following is written from my perspective, i.e. user `your_id`.
+The following is written from my perspective, i.e., user `your_id`.
 
 ```bash
 $ docker build -f docker/db/Dockerfile -t your_id/dbserver .
@@ -37,7 +37,6 @@ your_id/webserver   latest              537f5173f33e         2 minutes ago      
 
 
 ```bash
-$ mkdir $(pwd)/datadb  # not necessary on Linux
 $ docker run -d -p 27017:27017 --name dbserver your_id/dbserver
 $ docker run -it -d --rm --name webserver --link dbserver -p 5000:5000 your_id/webserver
 ```
