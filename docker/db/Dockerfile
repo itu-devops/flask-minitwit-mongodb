@@ -1,4 +1,4 @@
-FROM mongo:latest
+FROM mongo:8.0
 
 COPY ./dump/ /tmp/dump/mydb/
 
