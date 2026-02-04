@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     server.vm.provider :digital_ocean do |provider|
       provider.ssh_key_name = ENV["SSH_KEY_NAME"]
       provider.token = ENV["DIGITAL_OCEAN_TOKEN"]
-      provider.image = 'ubuntu-18-04-x64'
+      provider.image = 'ubuntu-22-04-x64'
       provider.region = 'fra1'
       provider.size = 's-1vcpu-1gb'
       provider.privatenetworking = true
@@ -30,11 +30,16 @@ Vagrant.configure("2") do |config|
     end
 
     server.vm.provision "shell", inline: <<-SHELL
-      echo "Installing MongoDB"
-      wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
-      echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+      # The following addresses an issue in DO's Ubuntu images, which still contain a lock file
+      sudo fuser -vk -TERM /var/lib/apt/lists/lock
       sudo apt-get update
-      # sudo apt-get install -y mongodb-org-shell mongodb-org-server mongodb-org-mongos mongodb-org
+
+      # See installation instructions: https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-ubuntu/
+      sudo apt-get install -y gnupg curl
+      echo "Installing MongoDB"
+      curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg --dearmor
+      echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+      sudo apt-get update
       sudo apt-get install -y mongodb-org
 
       sudo mkdir -p /data/db
@@ -50,7 +55,7 @@ Vagrant.configure("2") do |config|
     server.vm.provider :digital_ocean do |provider|
       provider.ssh_key_name = ENV["SSH_KEY_NAME"]
       provider.token = ENV["DIGITAL_OCEAN_TOKEN"]
-      provider.image = 'ubuntu-18-04-x64'
+      provider.image = 'ubuntu-22-04-x64'
       provider.region = 'fra1'
       provider.size = 's-1vcpu-1gb'
       provider.privatenetworking = true
@@ -66,8 +71,7 @@ Vagrant.configure("2") do |config|
           sleep(1)
         end
         db_ip = File.read($ip_file).strip()
-        puts "Now, I have it..."
-        puts db_ip
+        puts "Now, I have the dbserver's IP address: #{db_ip}"
       end
     end
 
@@ -78,25 +82,15 @@ Vagrant.configure("2") do |config|
     end
 
     server.vm.provision "shell", inline: <<-SHELL
-      export DB_IP=`cat /vagrant/db_ip.txt`
+      # The following addresses an issue in DO's Ubuntu images, which still contain a lock file
+      sudo fuser -vk -TERM /var/lib/apt/lists/lock
+      sudo apt-get update
+
+      export DB_IP=$(cat /vagrant/db_ip.txt)
       echo $DB_IP
 
-      echo "Installing Anaconda..."
-      sudo wget https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh -O $HOME/Anaconda3-2019.07-Linux-x86_64.sh
-
-      bash ~/Anaconda3-2019.07-Linux-x86_64.sh -b
-
-      echo ". $HOME/.bashrc" >> $HOME/.bash_profile
-      echo "export PATH=$HOME/anaconda3/bin:$PATH" >> $HOME/.bash_profile
-      export PATH="$HOME/anaconda3/bin:$PATH"
-      rm Anaconda3-2019.07-Linux-x86_64.sh
-      source $HOME/.bash_profile
-
-      echo $DB_IP
-
-
+      sudo apt-get install -y python-is-python3 python3-pip
       pip install Flask-PyMongo
-
 
       cp -r /vagrant/* $HOME
       nohup python minitwit.py > out.log &
@@ -108,7 +102,4 @@ Vagrant.configure("2") do |config|
       echo "http://${THIS_IP}:5000"
     SHELL
   end
-  config.vm.provision "shell", privileged: false, inline: <<-SHELL
-    sudo apt-get update
-  SHELL
 end
