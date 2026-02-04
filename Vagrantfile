@@ -76,9 +76,10 @@ Vagrant.configure("2") do |config|
       end
     end
 
-    server.trigger.after :provision do |trigger|
+    server.trigger.before :destroy do |trigger|
+      trigger.info =  "Cleaning dbserver's IP file."
       trigger.ruby do |env,machine|
-        File.delete($ip_file) if File.exists? $ip_file
+        File.delete($ip_file) if File.exist? $ip_file
       end
     end
 
